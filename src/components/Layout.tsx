@@ -11,42 +11,42 @@ const links = (activeLink: string) => [
       label: "Home",
       href: "/",
       icon: (
-        <IconHome className={`h-5 w-5 shrink-0 ${activeLink === 'Home' ? 'text-white' : 'text-neutral-700 dark:text-neutral-200'}`} />
+        <IconHome className={`h-5 w-5 shrink-0 ${activeLink === 'Home' ? 'text-primary' : 'text-neutral-700 dark:text-neutral-200'}`} />
       ),
     },
     {
       label: "Gateways",
       href: "/gateways",
       icon: (
-        <IconServer className={`h-5 w-5 shrink-0 ${activeLink === 'Gateways' ? 'text-white' : 'text-neutral-700 dark:text-neutral-200'}`} />
+        <IconServer className={`h-5 w-5 shrink-0 ${activeLink === 'Gateways' ? 'text-primary' : 'text-neutral-700 dark:text-neutral-200'}`} />
       ),
     },
     {
       label: "API Keys",
       href: "/api-keys",
       icon: (
-        <IconKey className={`h-5 w-5 shrink-0 ${activeLink === 'API Keys' ? 'text-white' : 'text-neutral-700 dark:text-neutral-200'}`} />
+        <IconKey className={`h-5 w-5 shrink-0 ${activeLink === 'API Keys' ? 'text-primary' : 'text-neutral-700 dark:text-neutral-200'}`} />
       ),
     },
     {
       label: "Webhooks",
       href: "/webhooks",
       icon: (
-        <IconWebhook className={`h-5 w-5 shrink-0 ${activeLink === 'Webhooks' ? 'text-white' : 'text-neutral-700 dark:text-neutral-200'}`} />
+        <IconWebhook className={`h-5 w-5 shrink-0 ${activeLink === 'Webhooks' ? 'text-primary' : 'text-neutral-700 dark:text-neutral-200'}`} />
       ),
     },
     {
       label: "Transactions",
       href: "/transactions",
       icon: (
-        <IconHistory className={`h-5 w-5 shrink-0 ${activeLink === 'Transactions' ? 'text-white' : 'text-neutral-700 dark:text-neutral-200'}`} />
+        <IconHistory className={`h-5 w-5 shrink-0 ${activeLink === 'Transactions' ? 'text-primary' : 'text-neutral-700 dark:text-neutral-200'}`} />
       ),
     },
     {
         label: "Settings",
         href: "/settings",
         icon: (
-          <IconSettings className={`h-5 w-5 shrink-0 ${activeLink === 'Settings' ? 'text-white' : 'text-neutral-700 dark:text-neutral-200'}`} />
+          <IconSettings className={`h-5 w-5 shrink-0 ${activeLink === 'Settings' ? 'text-primary' : 'text-neutral-700 dark:text-neutral-200'}`} />
         ),
     },
   ];
@@ -108,8 +108,8 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                     key={idx} 
                     className={cn(
                         'cursor-pointer',
-                        activeLink === link.label ? 'bg-green-500 rounded-lg px-3 py-2' : 'px-3 py-2',
-                        !open ? "w-full flex justify-center" : "" // Center content when closed
+                        activeLink === link.label ? 'bg-primary/10 rounded-lg px-3 py-2' : 'px-3 py-2',
+                        !open ? "w-full flex justify-center" : ""
                     )} 
                     >
                     <SidebarLink link={link} />
@@ -137,12 +137,18 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           </div>
         </SidebarBody>
       </Sidebar>
-      <div className="flex-1 flex flex-col">
+      <motion.div
+        className="flex-1 flex flex-col"
+        animate={{
+          marginLeft: open ? "300px" : "60px",
+        }}
+        transition={{ duration: 0.2 }}
+      >
         <Header />
         <main className="p-8">
           {children}
         </main>
-      </div>
+      </motion.div>
     </div>
   );
 };

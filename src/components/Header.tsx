@@ -1,13 +1,19 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { ChevronRight, Plus, ChevronDown } from 'react-feather';
+import { ChevronRight, Plus } from 'lucide-react';
+import { Status, StatusIndicator, StatusLabel } from '@/components/ui/shadcn-io/status';
+import { Button } from "@/components/ui/button";
+import {
+  NativeSelect,
+  NativeSelectOption,
+} from "@/components/ui/native-select"
 
 const Header: React.FC = () => {
   const location = useLocation();
   const pathnames = location.pathname.split('/').filter((x) => x);
 
   return (
-    <header className="flex items-center justify-between p-4 border-b">
+    <header className="sticky top-0 z-20 bg-background-dark/80 backdrop-blur-md border-b border-border-dark px-6 py-4 flex flex-wrap justify-between items-center gap-4"> {/* Added sticky top-0 z-20 */}
       <div className="flex items-center">
         {pathnames.length > 0 ? (
           <>
@@ -31,21 +37,31 @@ const Header: React.FC = () => {
         ) : (
           <span className="text-white">Dashboard</span>
         )}
+        <div className='ml-3'>
+          <Status
+            className="gap-4 rounded-full px-6 py-2 text-sm bg-primary/10 border border-primary/20"
+            status="online"
+            variant="outline"
+          >
+            <StatusIndicator />
+            <StatusLabel className="text-primary">LIVE MAINNET</StatusLabel>
+          </Status>
+        </div>
       </div>
       <div className="flex items-center">
-        <div className="flex items-center mr-4 p-2 bg-[#0D1117] border border-gray-700 rounded-md">
-          <span className="text-xs text-green-400 mr-2">●</span>
-          <span>LIVE MAINNET</span>
-          <ChevronDown size={16} className="ml-2 text-gray-500" />
+        <div className="mr-4" defaultValue={"30d"}>
+          <NativeSelect>
+            <NativeSelectOption value="30d">Last 30 days</NativeSelectOption>
+            <NativeSelectOption value="1d">1 day</NativeSelectOption>
+            <NativeSelectOption value="7d">Last 7 days</NativeSelectOption>
+            <NativeSelectOption value="6m">Last 6 months</NativeSelectOption>
+            <NativeSelectOption value="1y">Last 1 year</NativeSelectOption>
+          </NativeSelect>
         </div>
-        <div className="mr-4 flex items-center p-2 bg-[#0D1117] border border-gray-700 rounded-md">
-          <span>Last 30 Days</span>
-          <ChevronDown size={16} className="ml-2 text-gray-500" />
-        </div>
-        <button className="flex items-center p-2 bg-green-600 hover:bg-green-700 rounded-md">
+        <Button>
           <Plus size={20} className="mr-1" />
           New Gateway
-        </button>
+        </Button>
       </div>
     </header>
   );
