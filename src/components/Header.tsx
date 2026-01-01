@@ -8,6 +8,12 @@ import {
   NativeSelectOption,
 } from "@/components/ui/native-select"
 
+import {
+  Dialog,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import CreateGatewayModal from "./CreateGatewayModal";
+
 const Header: React.FC = () => {
   const location = useLocation();
   const pathnames = location.pathname.split('/').filter((x) => x);
@@ -58,10 +64,15 @@ const Header: React.FC = () => {
             <NativeSelectOption value="1y">Last 1 year</NativeSelectOption>
           </NativeSelect>
         </div>
-        <Button>
-          <Plus size={20} className="mr-1" />
-          New Gateway
-        </Button>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button>
+              <Plus size={20} className="mr-1" />
+              New Gateway
+            </Button>
+          </DialogTrigger>
+          <CreateGatewayModal />
+        </Dialog>
       </div>
     </header>
   );
