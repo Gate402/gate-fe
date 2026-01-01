@@ -173,7 +173,7 @@ export const columns: ColumnDef<Gateway>[] = [
       {
         id: "actions",
         header: () => <div className="text-center">Actions</div>,
-        cell: ({ row }) => {
+        cell: () => {
           return (
             <div className="text-center">
                 <DropdownMenu>
@@ -183,7 +183,7 @@ export const columns: ColumnDef<Gateway>[] = [
                     <MoreVertical className="h-5 w-5" />
                     </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="bg-surface-dark border-border-dark text-white">
+                <DropdownMenuContent align="end" className="bg-background border-border-dark text-white">
                     <DropdownMenuLabel>Actions</DropdownMenuLabel>
                     <DropdownMenuItem>View Details</DropdownMenuItem>
                     <DropdownMenuItem>Pause Gateway</DropdownMenuItem>
@@ -250,7 +250,7 @@ export function DataTable<TData, TValue>({
                                 <span className="text-sm font-medium hidden sm:inline">Filter</span>
                             </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="bg-surface-dark border-border-dark text-white">
+                        <DropdownMenuContent align="end" className="bg-background border-border-dark text-white">
                             {table
                             .getAllColumns()
                             .filter(
