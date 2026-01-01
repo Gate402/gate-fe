@@ -17,9 +17,10 @@ import CreateGatewayModal from "./CreateGatewayModal";
 const Header: React.FC = () => {
   const location = useLocation();
   const pathnames = location.pathname.split('/').filter((x) => x);
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
 
   return (
-    <header className="sticky top-0 z-20 bg-background-dark/80 backdrop-blur-md border-b border-border-dark px-6 py-4 flex flex-wrap justify-between items-center gap-4"> {/* Added sticky top-0 z-20 */}
+    <header className="sticky top-0 z-20 bg-background-dark/80 backdrop-blur-md border-b border-border-dark px-6 py-4 flex flex-wrap justify-between items-center gap-4">
       <div className="flex items-center">
         {pathnames.length > 0 ? (
           <>
@@ -64,14 +65,14 @@ const Header: React.FC = () => {
             <NativeSelectOption value="1y">Last 1 year</NativeSelectOption>
           </NativeSelect>
         </div>
-        <Dialog>
+        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
           <DialogTrigger asChild>
             <Button>
               <Plus size={20} className="mr-1" />
               New Gateway
             </Button>
           </DialogTrigger>
-          <CreateGatewayModal />
+          <CreateGatewayModal setOpen={setIsModalOpen} />
         </Dialog>
       </div>
     </header>

@@ -6,13 +6,14 @@ import { Link, Lock, ArrowRight } from 'lucide-react';
 
 import { useNavigate } from 'react-router-dom';
 
-const CreateGatewayModal: React.FC = () => {
+const CreateGatewayModal: React.FC<{ setOpen: (open: boolean) => void }> = ({ setOpen }) => {
   const navigate = useNavigate();
 
   const handleCreateGateway = () => {
     // Here you would normally handle form submission
     // For now, we'll just navigate to the success page
     navigate('/gateway-created');
+    setOpen(false);
   };
 
   return (
