@@ -64,6 +64,12 @@ body {
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  --color-background-dark: #09090b;
+  --color-surface-dark: #121214;
+  --color-card-dark: #18181b;
+  --color-border-dark: #27272a;
+  --color-text-dim: #a1a1aa;
 }
 
 :root {

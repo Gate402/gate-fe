@@ -138,14 +138,14 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         </SidebarBody>
       </Sidebar>
       <motion.div
-        className="flex-1 flex flex-col"
+        className="flex-1 flex flex-col min-h-screen"
         animate={{
           marginLeft: open ? "300px" : "60px",
         }}
         transition={{ duration: 0.2 }}
       >
         <Header />
-        <main className="p-8">
+        <main className="flex-1 flex flex-col p-8">
           {children}
         </main>
       </motion.div>
