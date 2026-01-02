@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount } from 'wagmi';
 import { useSiweLogin } from '../hooks/useSiweLogin';
@@ -6,16 +6,26 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
+import { useAuth } from '@/context/AuthContext';
 
 const Login: React.FC = () => {
   const { isConnected } = useAccount();
-  const { login, isLoading } = useSiweLogin();
+  const { login: siweLogin, isLoading } = useSiweLogin();
+  const { login: authLogin, isAuthenticated, isLoading: authLoading } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!authLoading && isAuthenticated) {
+      navigate('/dashboard');
+    }
+  }, [isAuthenticated, authLoading, navigate]);
 
   const handleLogin = async () => {
     try {
-      await login();
-      navigate('/');
+      const { user, tokens } = await siweLogin();
+      authLogin(user, tokens.accessToken, tokens.refreshToken);
+      console.log(user)
+      navigate('/dashboard');
     } catch (error) {
       console.error('Login error:', error);
       toast.error('Failed to sign in', {

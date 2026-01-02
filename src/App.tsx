@@ -6,6 +6,7 @@ import SuccessGateway from './pages/SuccessGateway';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import { Toaster } from './components/ui/sonner';
+import { ProtectedRoute } from './components/ProtectedRoute';
 
 function App() {
   return (
@@ -15,18 +16,22 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Home />} />
-        <Route
-          path="*"
-          element={
-            <Layout>
-              <Routes>
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/gateways" element={<Gateways />} />
-                <Route path="/gateway-created" element={<SuccessGateway />} />
-              </Routes>
-            </Layout>
-          }
-        />
+        
+        {/* Protected Routes */}
+        <Route element={<ProtectedRoute />}>
+          <Route
+            path="*"
+            element={
+              <Layout>
+                <Routes>
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/gateways" element={<Gateways />} />
+                  <Route path="/gateway-created" element={<SuccessGateway />} />
+                </Routes>
+              </Layout>
+            }
+          />
+        </Route>
       </Routes>
     </Router>
     </>
