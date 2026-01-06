@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Sidebar, SidebarBody, SidebarLink } from "./ui/sidebar";
+
+import { cn } from "@/lib/utils";
+import { motion } from "motion/react";
 import {
   IconHome,
   IconServer,
@@ -10,8 +13,7 @@ import {
   IconHistory,
 } from "@tabler/icons-react";
 import Header from "./Header";
-import { cn } from "@/lib/utils";
-import { motion } from "motion/react";
+import { useAuth } from "@/context/AuthContext";
 
 const links = (activeLink: string) => [
   {
@@ -119,6 +121,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   };
 
   const activeLink = getActiveLink(location.pathname);
+  const { user } = useAuth();
 
   return (
     <div className="flex h-full">
@@ -178,7 +181,13 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           <div className="border-t mt-4 pt-4">
             <SidebarLink
               link={{
-                label: "Alex Dev\n0x71C...39A2",
+                label: `${user?.name || "Anonymous"}\n${
+                  user?.evmAddress
+                    ? `${user.evmAddress.slice(0, 6)}...${user.evmAddress.slice(
+                        -4
+                      )}`
+                    : ""
+                }`,
                 href: "#",
                 icon: (
                   <img

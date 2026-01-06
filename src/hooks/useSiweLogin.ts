@@ -28,11 +28,8 @@ export function useSiweLogin() {
         signature,
       });
 
-      // 5. Store Token
-      localStorage.setItem('accessToken', data.tokens.accessToken);
-      localStorage.setItem('refreshToken', data.tokens.refreshToken);
-      
-      return data.user;
+      // 5. Return data for AuthContext
+      return { user: data.user, tokens: data.tokens };
 
     } catch (error) {
       console.error('Login failed', error);
