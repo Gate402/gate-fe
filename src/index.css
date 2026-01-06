@@ -1,10 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Instrument+Serif:ital@0;1&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Instrument+Serif:ital@0;1&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
   margin: 0;
   width: 100%;
@@ -70,6 +72,50 @@ body {
   --color-card-dark: #18181b;
   --color-border-dark: #27272a;
   --color-text-dim: #a1a1aa;
+  --animate-marquee: marquee var(--duration) infinite linear;
+  --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(calc(-100% - var(--gap)));
+    }
+  }
+  @keyframes marquee-vertical {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(calc(-100% - var(--gap)));
+    }
+  }
+  @keyframes smoothMorph {
+    0% {
+      transform: scale(1) rotate(0deg);
+      border-radius: 50%;
+    }
+    20% {
+      transform: scale(0.9) rotate(72deg);
+      border-radius: 35%;
+    }
+    40% {
+      transform: scale(1.1) rotate(144deg);
+      border-radius: 15%;
+    }
+    60% {
+      transform: scale(0.85) rotate(216deg);
+      border-radius: 8%;
+    }
+    80% {
+      transform: scale(1.05) rotate(288deg);
+      border-radius: 25%;
+    }
+    100% {
+      transform: scale(1) rotate(360deg);
+      border-radius: 50%;
+    }
+  }
 }
 
 :root {
@@ -144,7 +190,7 @@ body {
     --chart-4: oklch(0.828 0.189 84.429);
     --chart-5: oklch(0.769 0.188 70.08);
   }
- 
+
   .dark {
     --chart-1: oklch(0.488 0.243 264.376);
     --chart-2: oklch(0.696 0.17 162.48);
@@ -152,7 +198,7 @@ body {
     --chart-4: oklch(0.627 0.265 303.9);
     --chart-5: oklch(0.645 0.246 16.439);
   }
-  
+
   * {
     @apply border-border outline-ring/50;
   }
