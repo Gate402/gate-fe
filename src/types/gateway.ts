@@ -9,4 +9,5 @@ export type Gateway = {
     usd: number;
   };
   conversion: number;
+  paymentScheme?: string;
 };

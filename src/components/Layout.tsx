@@ -12,6 +12,7 @@ import {
   IconWebhook,
   IconHistory,
 } from "@tabler/icons-react";
+import { Waypoints } from "lucide-react";
 import Header from "./Header";
 import { useAuth } from "@/context/AuthContext";
 
@@ -93,23 +94,8 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         <SidebarBody className="justify-between gap-10">
           <div className="flex flex-col">
             <div className="flex items-center gap-2 mt-2">
-              <div className="h-8 w-8 bg-green-500 rounded-md flex items-center justify-center">
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2Z"
-                    fill="#1C1C1C"
-                  />
-                  <path
-                    d="M15.5 10.5C15.5 9.67157 14.8284 9 14 9H10C9.17157 9 8.5 9.67157 8.5 10.5V13.5C8.5 14.3284 9.17157 15 10 15H14C14.8284 15 15.5 14.3284 15.5 13.5V10.5Z"
-                    fill="#22C55E"
-                  />
-                </svg>
+              <div className="h-8 w-8 rounded-md flex items-center justify-center">
+                <Waypoints className="h-5 w-5 text-primary" />
               </div>
               <motion.span
                 animate={{
