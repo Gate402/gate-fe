@@ -10,7 +10,7 @@ import { useAuth } from '@/context/AuthContext';
 const links = (activeLink: string) => [
     {
       label: "Home",
-      href: "/",
+      href: "/dashboard",
       icon: (
         <IconHome className={`h-5 w-5 shrink-0 ${activeLink === 'Home' ? 'text-primary' : 'text-neutral-700 dark:text-neutral-200'}`} />
       ),
@@ -59,7 +59,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   const getActiveLink = (pathname: string) => {
     switch (pathname) {
-      case '/':
+      case '/dashboard':
         return 'Home';
       case '/gateways':
         return 'Gateways';
