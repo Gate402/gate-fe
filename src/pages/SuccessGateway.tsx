@@ -2,20 +2,24 @@ import React from 'react';
 import { Link, ExternalLink, Key, AlertTriangle, ArrowRight } from 'lucide-react';
 import { CodeBlock } from "@/components/ui/code-block";
 import { CopyButton } from '@/components/ui/shadcn-io/copy-button';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-
-const gatewayUrl = "https://alice-weather.gate402.io";
-const secretToken = "sk_live_402_9d8f7a6b5c4e3d2a1f0e9d8c7b6a5f4e";
 
 const SuccessGateway: React.FC = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const data = location.state;
+
+    const gatewayUrl = data?.gatewayUrl || "https://alice-weather.gate402.io";
+    const secretToken = data?.secretToken || "sk_live_402_9d8f7a6b5c4e3d2a1f0e9d8c7b6a5f4e";
+    const price = data?.defaultPricePerRequest || 0.05;
+
     const codeSnippet = `const x402 = require('x402-node');
 app.use(
   "/weather", 
   x402.middleware({
     gateway: "${gatewayUrl}",
-    price: { amount: 0.05, currency: "USD" }
+    price: { amount: ${price}, currency: "USD" }
   })
 );`;
     
@@ -81,10 +85,10 @@ app.use(
               </div>
           </div>
           <div className="bg-black/20 border-t border-border-dark p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <Button variant="ghost" onClick={() => navigate('/')}>
+            <Button variant="ghost" onClick={() => navigate('/dashboard')}>
               Skip setup for now
             </Button>
-            <Button onClick={() => navigate('/')}>
+            <Button onClick={() => navigate('/dashboard')}>
               Go to Dashboard
               <ArrowRight size={16} className="ml-2"/>
             </Button>

@@ -13,7 +13,7 @@ export function useSiweLogin() {
 
     try {
       // 1. Get Nonce
-      const { data: { nonce } } = await api.post('/api/auth/siwe/nonce', { address });
+      const { data: { nonce } } = await api.post('/auth/siwe/nonce', { address });
 
       // 2. Prepare Message
       // Ideally use a library like `siwe` to generate this string to ensure strict compliance
@@ -23,7 +23,7 @@ export function useSiweLogin() {
       const signature = await signMessageAsync({ message });
 
       // 4. Verify & Login
-      const { data } = await api.post('/api/auth/siwe/verify', {
+      const { data } = await api.post('/auth/siwe/verify', {
         message,
         signature,
       });

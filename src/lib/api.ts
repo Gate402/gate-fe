@@ -28,7 +28,7 @@ api.interceptors.response.use(
         try {
           // Attempt to refresh tokens
           // Adjust the endpoint URL to match your backend
-          const { data } = await api.post('/api/auth/refresh', { refreshToken });
+          const { data } = await api.post('/auth/refresh', { refreshToken });
 
           // Store new tokens
           localStorage.setItem('accessToken', data.accessToken);
