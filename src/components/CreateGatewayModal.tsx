@@ -107,7 +107,6 @@ const CreateGatewayModal: React.FC<{ setOpen: (open: boolean) => void }> = ({ se
           // customDomain: customDomain || undefined,
           paymentScheme: "exact",
           paymentNetwork,
-          acceptedNetworks: [paymentNetwork],
           defaultToken 
         }); 
       } else {
