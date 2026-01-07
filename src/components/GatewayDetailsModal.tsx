@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Button } from "@/components/ui/button";
-import { Link, Loader2, Globe, Save } from 'lucide-react';
+import { Link, Loader2, Globe, Save, Wallet } from 'lucide-react';
 import { toast } from "sonner";
 import { gatewaysApi } from '@/lib/gateways';
+import { configApi } from '@/lib/config';
 import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
+import { type ChainWithTokensResponse, type TokenResponse } from '@/types/config';
 
 interface GatewayDetailsModalProps {
   gatewayId: string | null;
@@ -22,16 +24,43 @@ const GatewayDetailsModal: React.FC<GatewayDetailsModalProps> = ({ gatewayId, se
   const [price, setPrice] = useState('');
   const [subdomain, setSubdomain] = useState('');
   const [customDomain, setCustomDomain] = useState('');
-  const [paymentScheme, setPaymentScheme] = useState('flexible');
-  const [paymentNetwork, setPaymentNetwork] = useState('base');
+  const [paymentNetwork, setPaymentNetwork] = useState('');
   const [status, setStatus] = useState('active');
   const [evmAddress, setEvmAddress] = useState('');
+  const [defaultToken, setDefaultToken] = useState('');
+  
+  const [chains, setChains] = useState<ChainWithTokensResponse[]>([]);
+  const [availableTokens, setAvailableTokens] = useState<TokenResponse[]>([]);
+
+  useEffect(() => {
+    const fetchChains = async () => {
+      try {
+        const data = await configApi.getChainsWithTokens();
+        setChains(data);
+      } catch (error) {
+        console.error("Failed to fetch chains:", error);
+        toast.error("Failed to load available networks");
+      }
+    };
+    fetchChains();
+  }, []);
 
   useEffect(() => {
     if (gatewayId) {
       fetchGatewayDetails(gatewayId);
     }
   }, [gatewayId]);
+
+  // Update available tokens when chains are loaded or payment network changes
+  // This handles the initial load where paymentNetwork is set from gateway data
+  useEffect(() => {
+    if (chains.length > 0 && paymentNetwork) {
+      const selectedChain = chains.find(c => c.id === paymentNetwork);
+      if (selectedChain) {
+        setAvailableTokens(selectedChain.tokens);
+      }
+    }
+  }, [chains, paymentNetwork]);
 
   const fetchGatewayDetails = async (id: string) => {
     setIsLoading(true);
@@ -41,16 +70,29 @@ const GatewayDetailsModal: React.FC<GatewayDetailsModalProps> = ({ gatewayId, se
       setPrice(data.defaultPricePerRequest?.toString() || '');
       setSubdomain(data.subdomain || '');
       setCustomDomain(data.customDomain || '');
-      setPaymentScheme(data.paymentScheme || 'flexible');
-      setPaymentNetwork(data.paymentNetwork || 'base');
+      setPaymentNetwork(data.paymentNetwork || '');
       setStatus(data.status || 'active');
       setEvmAddress(data.evmAddress || '');
+      setDefaultToken(data.defaultToken || '');
     } catch (error) {
       console.error("Failed to fetch gateway details:", error);
       toast.error("Failed to load gateway details.");
       setOpen(false);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleChainChange = (chainId: string) => {
+    setPaymentNetwork(chainId);
+    const selectedChain = chains.find(c => c.id === chainId);
+    if (selectedChain) {
+      setAvailableTokens(selectedChain.tokens);
+      if (selectedChain.tokens.length > 0) {
+        setDefaultToken(selectedChain.tokens[0].id);
+      } else {
+        setDefaultToken('');
+      }
     }
   };
 
@@ -64,17 +106,21 @@ const GatewayDetailsModal: React.FC<GatewayDetailsModalProps> = ({ gatewayId, se
       toast.error("Please enter a price per request");
       return;
     }
+    if (!defaultToken) {
+      toast.error("Please select a payment token.");
+      return;
+    }
 
     setIsSaving(true);
     try {
       await gatewaysApi.update(gatewayId, {
         originUrl,
-        defaultPricePerRequest: Number(price),
+        defaultPricePerRequest: price,
         customDomain: customDomain || undefined,
-        paymentScheme,
         paymentNetwork,
         status,
-        evmAddress
+        evmAddress,
+        defaultToken: defaultToken || undefined
       } as any); 
       
       toast.success("Gateway updated successfully!");
@@ -155,7 +201,7 @@ const GatewayDetailsModal: React.FC<GatewayDetailsModalProps> = ({ gatewayId, se
                 </InputGroup>
             </div>
           </div>
-
+{/* 
            <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-300" htmlFor="custom-domain">
                 Custom Domain
@@ -171,23 +217,43 @@ const GatewayDetailsModal: React.FC<GatewayDetailsModalProps> = ({ gatewayId, se
                   onChange={(e) => setCustomDomain(e.target.value)}
                 />
               </InputGroup>
-           </div>
+           </div> */}
 
            <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-300">Payment Scheme</label>
-                <NativeSelect value={paymentScheme} onChange={(e) => setPaymentScheme(e.target.value)}>
-                  <NativeSelectOption value="flexible">Flexible</NativeSelectOption>
-                  <NativeSelectOption value="exact">Exact</NativeSelectOption>
+                <label className="block text-sm font-medium text-gray-300">Payment Network</label>
+                 <NativeSelect value={paymentNetwork} onChange={(e) => handleChainChange(e.target.value)}>
+                  {chains.map((chain) => (
+                    <NativeSelectOption key={chain.id} value={chain.id}>{chain.name}</NativeSelectOption>
+                  ))}
                 </NativeSelect>
               </div>
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-300">Primary Network</label>
-                 <NativeSelect value={paymentNetwork} onChange={(e) => setPaymentNetwork(e.target.value)}>
-                  <NativeSelectOption value="base">Base</NativeSelectOption>
-                  <NativeSelectOption value="solana">Solana</NativeSelectOption>
+                <label className="block text-sm font-medium text-gray-300">Payment Token</label>
+                 <NativeSelect value={defaultToken} onChange={(e) => setDefaultToken(e.target.value)} disabled={availableTokens.length === 0}>
+                  {availableTokens.map((token) => (
+                    <NativeSelectOption key={token.id} value={token.id}>{token.symbol}</NativeSelectOption>
+                  ))}
+                  {availableTokens.length === 0 && <NativeSelectOption value="">No tokens</NativeSelectOption>}
                 </NativeSelect>
               </div>
+           </div>
+
+           <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-300" htmlFor="evm-address">
+                Receiving EVM Address
+              </label>
+              <InputGroup>
+                <InputGroupAddon>
+                  <Wallet size={16}/>
+                </InputGroupAddon>
+                <InputGroupInput 
+                  id="evm-address" 
+                  placeholder="0x..." 
+                  value={evmAddress}
+                  onChange={(e) => setEvmAddress(e.target.value)}
+                />
+              </InputGroup>
            </div>
         </div>
       )}
