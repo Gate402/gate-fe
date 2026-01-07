@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Waypoints, Menu as MenuIcon, X } from "lucide-react";
+import { Menu as MenuIcon, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Menu,
@@ -8,6 +8,7 @@ import {
   ProductItem,
   HoveredLink,
 } from "@/components/ui/navbar-menu";
+import { cn } from "@/lib/utils";
 
 export const Navbar = () => {
   const [active, setActive] = useState<string | null>(null);
@@ -62,7 +63,7 @@ export const Navbar = () => {
         `}
         >
           {/* Logo */}
-          <div
+          {/* <div
             className="flex items-center gap-2 cursor-pointer group"
             onClick={() => navigate("/")}
           >
@@ -72,7 +73,13 @@ export const Navbar = () => {
             <span className="font-bold text-lg text-white font-serif tracking-tight">
               Gate402
             </span>
-          </div>
+          </div> */}
+          <a href="/">
+            <img
+              src="/Logo.png"
+              className={cn(isAtTop ? "size-10" : "size-8")}
+            />
+          </a>
 
           {/* Desktop Nav with Dropdowns */}
           <div className="hidden md:flex items-center gap-6">
