@@ -12,6 +12,7 @@ import {
 import { Features } from "@/components/landing/Features";
 import { MinimalFooter } from "@/components/ui/minimal-footer";
 import { CallToAction } from "@/components/ui/cta-3";
+import { Seo } from "@/components/seo/Seo";
 import { SmoothScrollProvider } from "@/components/SmoothScrollProvider";
 
 const Home: React.FC = () => {
@@ -41,6 +42,7 @@ const Home: React.FC = () => {
 
         {/* All content above background */}
         <div className="relative z-10">
+          <Seo />
           <Navbar />
 
           {/* Hero section */}
