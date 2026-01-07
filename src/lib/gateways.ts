@@ -4,17 +4,19 @@ export interface QuickCreateGatewayRequest {
   originUrl: string;
   pricePerRequest: number;
   evmAddress: string;
+  defaultToken: string;
 }
 
 export interface CreateGatewayRequest {
   originUrl: string;
-  pricePerRequest: number;
-  acceptedNetworks: string[];
+  pricePerRequest: string;
   subdomain: string;
   evmAddress: string;
   customDomain?: string;
   paymentScheme?: string;
   paymentNetwork?: string;
+  acceptedNetworks?: string[];
+  defaultToken: string;
 }
 
 export const gatewaysApi = {

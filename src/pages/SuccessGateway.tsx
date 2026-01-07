@@ -10,7 +10,8 @@ const SuccessGateway: React.FC = () => {
     const location = useLocation();
     const data = location.state;
 
-    const gatewayUrl = data?.gatewayUrl || "https://alice-weather.gate402.io";
+    const gatewayDomain = import.meta.env.VITE_GATEWAY_DOMAIN || ".dummy.io";
+    const gatewayUrl = data?.gatewayUrl || (data?.subdomain ? `https://${data.subdomain}${gatewayDomain}` : "https://alice-weather.gate402.io");
     const secretToken = data?.secretToken || "sk_live_402_9d8f7a6b5c4e3d2a1f0e9d8c7b6a5f4e";
     const price = data?.defaultPricePerRequest || 0.05;
 
