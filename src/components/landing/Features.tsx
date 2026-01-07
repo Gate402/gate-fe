@@ -90,9 +90,14 @@ export const Features = () => {
       {/* Bento Grid */}
       <div className="max-w-7xl mx-auto">
         <BentoGrid>
-          {features.map((feature) => (
-            <BentoCard key={feature.name} {...feature} />
-          ))}
+          {features.map((feature) => {
+            const { className, ...cardProps } = feature;
+            return (
+              <div key={feature.name} className={className}>
+                <BentoCard {...cardProps} className="" />
+              </div>
+            );
+          })}
         </BentoGrid>
       </div>
     </section>

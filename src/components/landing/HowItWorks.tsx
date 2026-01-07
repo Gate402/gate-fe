@@ -113,94 +113,180 @@ const Step3Visualization = ({
   </div>
 );
 
-// Visualization for Step 4
-const Step4Visualization = () => (
-  <div className="rounded-lg border border-border-dark/50 bg-slate-900/50 backdrop-blur-sm p-8">
-    <div className="flex items-center justify-between gap-4">
-      <div className="flex flex-col items-center gap-2">
-        <div className="rounded-full bg-blue-500/10 p-3">
-          <svg
-            className="h-6 w-6 text-blue-400"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+// Visualization for Step 4 with continuous animation
+const Step4Visualization = () => {
+  const pulseAnimation = {
+    scale: [1, 1.1, 1],
+    opacity: [0.5, 1, 0.5],
+    boxShadow: [
+      "0 0 0 0 rgba(59, 130, 246, 0.4)",
+      "0 0 0 20px rgba(59, 130, 246, 0)",
+      "0 0 0 0 rgba(59, 130, 246, 0)",
+    ],
+  };
+
+  const arrowAnimation = {
+    opacity: [0.4, 1, 0.4],
+  };
+
+  return (
+    <div className="rounded-lg border border-border-dark/50 bg-slate-900/50 backdrop-blur-sm p-8">
+      <div className="flex items-center justify-between gap-4">
+        {/* Client */}
+        <div className="flex flex-col items-center gap-2">
+          <motion.div
+            className="rounded-full bg-blue-500/10 p-3"
+            animate={pulseAnimation}
+            transition={{
+              duration: 1,
+              repeat: Infinity,
+              repeatDelay: 3,
+              delay: 0,
+            }}
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-            />
-          </svg>
+            <svg
+              className="h-6 w-6 text-blue-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+              />
+            </svg>
+          </motion.div>
+          <span className="text-xs text-text-dim">Client</span>
         </div>
-        <span className="text-xs text-text-dim">Client</span>
-      </div>
 
-      <IconArrowRight className="text-text-dim/40" size={20} />
+        <motion.div
+          animate={arrowAnimation}
+          transition={{
+            duration: 1,
+            repeat: Infinity,
+            repeatDelay: 3,
+            delay: 0.5,
+          }}
+        >
+          <IconArrowRight className="text-text-dim/40" size={20} />
+        </motion.div>
 
-      <div className="flex flex-col items-center gap-2">
-        <div className="rounded-full bg-primary/10 p-3">
-          <svg
-            className="h-6 w-6 text-primary"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+        {/* Pay */}
+        <div className="flex flex-col items-center gap-2">
+          <motion.div
+            className="rounded-full bg-primary/10 p-3"
+            animate={pulseAnimation}
+            transition={{
+              duration: 1,
+              repeat: Infinity,
+              repeatDelay: 3,
+              delay: 1,
+            }}
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
+            <svg
+              className="h-6 w-6 text-primary"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+          </motion.div>
+          <span className="text-xs text-text-dim">Pay</span>
         </div>
-        <span className="text-xs text-text-dim">Pay</span>
-      </div>
 
-      <IconArrowRight className="text-text-dim/40" size={20} />
+        <motion.div
+          animate={arrowAnimation}
+          transition={{
+            duration: 1,
+            repeat: Infinity,
+            repeatDelay: 3,
+            delay: 1.5,
+          }}
+        >
+          <IconArrowRight className="text-text-dim/40" size={20} />
+        </motion.div>
 
-      <div className="flex flex-col items-center gap-2">
-        <div className="rounded-full bg-purple-500/10 p-3">
-          <svg
-            className="h-6 w-6 text-purple-400"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+        {/* Access API */}
+        <div className="flex flex-col items-center gap-2">
+          <motion.div
+            className="rounded-full bg-purple-500/10 p-3"
+            animate={pulseAnimation}
+            transition={{
+              duration: 1,
+              repeat: Infinity,
+              repeatDelay: 3,
+              delay: 2,
+            }}
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-            />
-          </svg>
+            <svg
+              className="h-6 w-6 text-purple-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+              />
+            </svg>
+          </motion.div>
+          <span className="text-xs text-text-dim">Access API</span>
         </div>
-        <span className="text-xs text-text-dim">Access API</span>
-      </div>
 
-      <IconArrowRight className="text-text-dim/40" size={20} />
+        <motion.div
+          animate={arrowAnimation}
+          transition={{
+            duration: 1,
+            repeat: Infinity,
+            repeatDelay: 3,
+            delay: 2.5,
+          }}
+        >
+          <IconArrowRight className="text-text-dim/40" size={20} />
+        </motion.div>
 
-      <div className="flex flex-col items-center gap-2">
-        <div className="rounded-full bg-emerald-500/10 p-3">
-          <svg
-            className="h-6 w-6 text-emerald-400"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+        {/* You earn */}
+        <div className="flex flex-col items-center gap-2">
+          <motion.div
+            className="rounded-full bg-emerald-500/10 p-3"
+            animate={pulseAnimation}
+            transition={{
+              duration: 1,
+              repeat: Infinity,
+              repeatDelay: 3,
+              delay: 3,
+            }}
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
+            <svg
+              className="h-6 w-6 text-emerald-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+          </motion.div>
+          <span className="text-xs text-text-dim">You earn</span>
         </div>
-        <span className="text-xs text-text-dim">You earn</span>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 // Progress indicator dot component
 const ProgressDot = ({
@@ -339,7 +425,7 @@ export const HowItWorks = () => {
     <div
       ref={containerRef}
       className="relative mt-24 border-t border-border-dark/50"
-      style={{ height: "400vh" }}
+      style={{ height: "1000vh" }}
       id="how-it-works"
     >
       {/* Sticky container for the entire section */}
