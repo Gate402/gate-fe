@@ -1,33 +1,66 @@
-import React from 'react';
-import { useLocation } from 'react-router-dom';
-import { ChevronRight, Plus } from 'lucide-react';
-import { Status, StatusIndicator, StatusLabel } from '@/components/ui/shadcn-io/status';
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { ChevronRight, Plus } from "lucide-react";
+import {
+  Status,
+  StatusIndicator,
+  StatusLabel,
+} from "@/components/ui/shadcn-io/status";
 import { Button } from "@/components/ui/button";
 import {
   NativeSelect,
   NativeSelectOption,
-} from "@/components/ui/native-select"
+} from "@/components/ui/native-select";
 
-import {
-  Dialog,
-  DialogTrigger,
-} from "@/components/ui/dialog"
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import CreateGatewayModal from "./CreateGatewayModal";
 
 const Header: React.FC = () => {
   const location = useLocation();
-  const pathnames = location.pathname.split('/').filter((x) => x);
+  const pathnames = location.pathname.split("/").filter((x) => x);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [isAtTop, setIsAtTop] = useState(true);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      setIsAtTop(scrollPosition === 0);
+    };
+
+    // Check initial position
+    handleScroll();
+
+    // Add scroll event listener
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    // Cleanup
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
-    <header className="sticky top-0 z-20 bg-background-dark/80 backdrop-blur-md border-b border-border-dark px-6 py-4 flex flex-wrap justify-between items-center gap-4">
+    <header
+      className={`
+        sticky top-0 z-20 
+        bg-background-dark/80 backdrop-blur-md 
+        border-b border-border-dark 
+        flex flex-wrap justify-between items-center gap-4
+        transition-all duration-300 ease-in-out
+        ${
+          isAtTop
+            ? "px-6 py-6 w-full rounded-none"
+            : "px-6 py-4 mx-4 mt-4 rounded-xl w-[calc(100%-2rem)]"
+        }
+      `}
+    >
       <div className="flex items-center">
         {pathnames.length > 0 ? (
           <>
             <span className="text-gray-400">Dashboard</span>
             {pathnames.map((value, index) => {
               const last = index === pathnames.length - 1;
-              const to = `/${pathnames.slice(0, index + 1).join('/')}`;
+              const to = `/${pathnames.slice(0, index + 1).join("/")}`;
 
               return (
                 <div key={to} className="flex items-center">
@@ -44,7 +77,7 @@ const Header: React.FC = () => {
         ) : (
           <span className="text-white">Dashboard</span>
         )}
-        <div className='ml-3'>
+        <div className="ml-3">
           <Status
             className="gap-4 rounded-full px-6 py-2 text-sm bg-primary/10 border border-primary/20"
             status="online"
