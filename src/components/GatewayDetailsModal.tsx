@@ -6,7 +6,13 @@ import { Link, Loader2, Globe, Save, Wallet } from 'lucide-react';
 import { toast } from "sonner";
 import { gatewaysApi } from '@/lib/gateways';
 import { configApi } from '@/lib/config';
-import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
+import { 
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from "@/components/ui/select";
 import { type ChainWithTokensResponse, type TokenResponse } from '@/types/config';
 
 interface GatewayDetailsModalProps {
@@ -149,10 +155,15 @@ const GatewayDetailsModal: React.FC<GatewayDetailsModalProps> = ({ gatewayId, se
         <div className="p-6 space-y-6">
            <div className="space-y-2">
             <label className="block text-sm font-medium text-gray-300">Gateway Status</label>
-            <NativeSelect value={status} onChange={(e) => setStatus(e.target.value)}>
-              <NativeSelectOption value="active">Active</NativeSelectOption>
-              <NativeSelectOption value="paused">Paused</NativeSelectOption>
-            </NativeSelect>
+            <Select value={status} onValueChange={setStatus}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="active">Active</SelectItem>
+                <SelectItem value="paused">Paused</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="space-y-2">
@@ -222,20 +233,30 @@ const GatewayDetailsModal: React.FC<GatewayDetailsModalProps> = ({ gatewayId, se
            <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <label className="block text-sm font-medium text-gray-300">Payment Network</label>
-                 <NativeSelect value={paymentNetwork} onChange={(e) => handleChainChange(e.target.value)}>
-                  {chains.map((chain) => (
-                    <NativeSelectOption key={chain.id} value={chain.id}>{chain.name}</NativeSelectOption>
-                  ))}
-                </NativeSelect>
+                 <Select value={paymentNetwork} onValueChange={handleChainChange}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select network" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {chains.map((chain) => (
+                      <SelectItem key={chain.id} value={chain.id}>{chain.name}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
               <div className="space-y-2">
                 <label className="block text-sm font-medium text-gray-300">Payment Token</label>
-                 <NativeSelect value={defaultToken} onChange={(e) => setDefaultToken(e.target.value)} disabled={availableTokens.length === 0}>
-                  {availableTokens.map((token) => (
-                    <NativeSelectOption key={token.id} value={token.id}>{token.symbol}</NativeSelectOption>
-                  ))}
-                  {availableTokens.length === 0 && <NativeSelectOption value="">No tokens</NativeSelectOption>}
-                </NativeSelect>
+                 <Select value={defaultToken} onValueChange={setDefaultToken} disabled={availableTokens.length === 0}>
+                  <SelectTrigger>
+                    <SelectValue placeholder={availableTokens.length === 0 ? "No tokens" : "Select token"} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {availableTokens.map((token) => (
+                      <SelectItem key={token.id} value={token.id}>{token.symbol}</SelectItem>
+                    ))}
+                    {availableTokens.length === 0 && <SelectItem value="no-tokens" disabled>No tokens</SelectItem>}
+                  </SelectContent>
+                </Select>
               </div>
            </div>
 

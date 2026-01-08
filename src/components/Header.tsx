@@ -8,9 +8,12 @@ import {
 } from "@/components/ui/shadcn-io/status";
 import { Button } from "@/components/ui/button";
 import {
-  NativeSelect,
-  NativeSelectOption,
-} from "@/components/ui/native-select";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import CreateGatewayModal from "./CreateGatewayModal";
@@ -89,14 +92,19 @@ const Header: React.FC = () => {
         </div>
       </div>
       <div className="flex items-center">
-        <div className="mr-4" defaultValue={"30d"}>
-          <NativeSelect>
-            <NativeSelectOption value="30d">Last 30 days</NativeSelectOption>
-            <NativeSelectOption value="1d">1 day</NativeSelectOption>
-            <NativeSelectOption value="7d">Last 7 days</NativeSelectOption>
-            <NativeSelectOption value="6m">Last 6 months</NativeSelectOption>
-            <NativeSelectOption value="1y">Last 1 year</NativeSelectOption>
-          </NativeSelect>
+        <div className="mr-4">
+          <Select defaultValue="30d">
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Select duration" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="30d">Last 30 days</SelectItem>
+              <SelectItem value="1d">1 day</SelectItem>
+              <SelectItem value="7d">Last 7 days</SelectItem>
+              <SelectItem value="6m">Last 6 months</SelectItem>
+              <SelectItem value="1y">Last 1 year</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
           <DialogTrigger asChild>
