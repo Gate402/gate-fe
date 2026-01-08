@@ -49,7 +49,6 @@ const Home: React.FC = () => {
           <div className="flex flex-col items-center justify-center pt-16 pb-16">
             <div className="w-full max-w-5xl text-center px-4">
               <Hero />
-              {/* <AnimatedDiagram /> */}
             </div>
           </div>
 

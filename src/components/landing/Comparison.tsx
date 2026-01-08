@@ -120,14 +120,19 @@ const ComparisonCell = ({
   return (
     <div
       className={`flex items-start gap-3 ${
-        isHighlighted ? "text-white" : "text-text-dim"
+        isHighlighted ? "text-white" : "text-[#a1a1aa]"
       }`}
     >
       <div className="shrink-0 mt-0.5">
         {item.isPositive ? (
-          <IconCheck className="h-5 w-5 text-emerald-500" strokeWidth={2.5} />
+          <IconCheck
+            className={`h-5 w-5 ${
+              isHighlighted ? "text-[#25f478]" : "text-emerald-500/80"
+            }`}
+            strokeWidth={2.5}
+          />
         ) : (
-          <IconX className="h-5 w-5 text-red-500" strokeWidth={2.5} />
+          <IconX className="h-5 w-5 text-red-500/70" strokeWidth={2.5} />
         )}
       </div>
       <div className="text-sm leading-relaxed">{item.value}</div>
@@ -138,39 +143,39 @@ const ComparisonCell = ({
 export const Comparison = () => {
   return (
     <section
-      className="mt-24 border-t border-border-dark/50 pt-16"
+      className="mt-24 border-t border-[#27272a] pt-16 px-4"
       id="comparison"
     >
       {/* Section Header */}
-      <div className="mb-12 text-center">
-        <p className="mb-4 font-mono text-xs uppercase tracking-widest text-text-dim/60">
+      <div className="mb-16 text-center">
+        <p className="mb-4 font-mono text-xs uppercase tracking-widest text-[#25f478]">
           The Smart Choice
         </p>
-        <h2 className="text-4xl font-bold text-white md:text-5xl">
-          Why Gate402 vs. Traditional API Billing
+        <h2 className="text-4xl font-bold font-heading text-white md:text-5xl">
+          Why Gate402 vs. The Rest
         </h2>
       </div>
 
       {/* Comparison Table - Desktop */}
-      <div className="hidden lg:block">
-        <div className="overflow-hidden rounded-xl border border-border-dark/50 bg-card-dark/20 backdrop-blur-sm">
+      <div className="hidden lg:block max-w-6xl mx-auto">
+        <div className="overflow-hidden rounded-xl border border-[#27272a] bg-[#18181b]">
           {/* Table Header */}
-          <div className="grid grid-cols-4 border-b border-border-dark/50 bg-card-dark/40">
+          <div className="grid grid-cols-4 border-b border-[#27272a] bg-[#18181b]">
             <div className="p-6"></div>
             <div className="p-6 text-center">
-              <div className="text-sm font-semibold uppercase tracking-wider text-text-dim/60">
+              <div className="text-sm font-bold font-mono uppercase tracking-wider text-[#a1a1aa]">
                 💳 Stripe
               </div>
             </div>
-            <div className="relative p-6 text-center">
-              <div className="absolute inset-0 bg-primary/5 border-x border-primary/20"></div>
-              <div className="relative text-sm font-semibold uppercase tracking-wider text-primary">
+            <div className="relative p-6 text-center border-x border-[#25f478]/20 bg-[#25f478]/5">
+              <div className="absolute top-0 left-0 w-full h-1 bg-[#25f478] shadow-[0_0_10px_rgba(37,244,120,0.5)]"></div>
+              <div className="relative text-sm font-bold font-mono uppercase tracking-wider text-[#25f478]">
                 ⚡ Gate402
               </div>
             </div>
             <div className="p-6 text-center">
-              <div className="text-sm font-semibold uppercase tracking-wider text-text-dim/60">
-                🛠️ Build Yourself
+              <div className="text-sm font-bold font-mono uppercase tracking-wider text-[#a1a1aa]">
+                🛠️ DIY
               </div>
             </div>
           </div>
@@ -183,16 +188,15 @@ export const Comparison = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className="grid grid-cols-4 border-b border-border-dark/30 last:border-b-0 hover:bg-card-dark/40 transition-colors duration-200"
+              className="grid grid-cols-4 border-b border-[#27272a] last:border-b-0 hover:bg-[#18181b]/80 transition-colors duration-200"
             >
-              <div className="p-6 font-semibold text-white border-r border-border-dark/30">
+              <div className="p-6 font-heading font-semibold text-white border-r border-[#27272a]">
                 {row.aspect}
               </div>
-              <div className="p-6 border-r border-border-dark/30">
+              <div className="p-6 border-r border-[#27272a]">
                 <ComparisonCell item={row.stripe} />
               </div>
-              <div className="relative p-6 border-r border-primary/20">
-                <div className="absolute inset-0 bg-primary/5"></div>
+              <div className="relative p-6 border-r border-[#25f478]/20 bg-[#25f478]/5">
                 <div className="relative">
                   <ComparisonCell item={row.gate402} isHighlighted />
                 </div>
@@ -206,7 +210,7 @@ export const Comparison = () => {
       </div>
 
       {/* Comparison Cards - Mobile/Tablet */}
-      <div className="lg:hidden space-y-6">
+      <div className="lg:hidden space-y-6 max-w-md mx-auto">
         {comparisonData.map((row, index) => (
           <motion.div
             key={row.aspect}
@@ -214,27 +218,29 @@ export const Comparison = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: index * 0.1 }}
-            className="rounded-xl border border-border-dark/50 bg-card-dark/20 backdrop-blur-sm overflow-hidden"
+            className="rounded-xl border border-[#27272a] bg-[#18181b] overflow-hidden"
           >
-            <div className="p-4 bg-card-dark/40 border-b border-border-dark/50">
-              <h3 className="font-semibold text-white">{row.aspect}</h3>
+            <div className="p-4 bg-[#18181b] border-b border-[#27272a]">
+              <h3 className="font-heading font-semibold text-white">
+                {row.aspect}
+              </h3>
             </div>
             <div className="p-4 space-y-4">
               <div>
-                <div className="text-xs font-semibold uppercase tracking-wider text-text-dim/60 mb-2">
+                <div className="text-xs font-mono font-semibold uppercase tracking-wider text-[#a1a1aa] mb-2">
                   💳 Stripe
                 </div>
                 <ComparisonCell item={row.stripe} />
               </div>
-              <div className="pt-4 border-t border-primary/20">
-                <div className="text-xs font-semibold uppercase tracking-wider text-primary mb-2">
+              <div className="pt-4 pb-4 -mx-4 px-4 bg-[#25f478]/5 border-y border-[#25f478]/20">
+                <div className="text-xs font-mono font-semibold uppercase tracking-wider text-[#25f478] mb-2">
                   ⚡ Gate402
                 </div>
                 <ComparisonCell item={row.gate402} isHighlighted />
               </div>
-              <div className="pt-4 border-t border-border-dark/30">
-                <div className="text-xs font-semibold uppercase tracking-wider text-text-dim/60 mb-2">
-                  🛠️ Build Yourself
+              <div>
+                <div className="text-xs font-mono font-semibold uppercase tracking-wider text-[#a1a1aa] mb-2">
+                  🛠️ DIY
                 </div>
                 <ComparisonCell item={row.diy} />
               </div>

@@ -1,5 +1,7 @@
 "use client";
 
+import { motion } from "motion/react";
+
 import {
   IconRobot,
   IconBolt,
@@ -19,19 +21,19 @@ const features = [
     cta: "Learn more",
     className: "col-span-3 lg:col-span-2",
     background: (
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-purple-500/5 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[#25f478]/10 via-[#00ff88]/5 to-transparent opacity-50" />
     ),
   },
   {
     Icon: IconBolt,
-    name: "Instant, Non-Custodial Payments",
+    name: "Instant, Non-Custodial",
     description:
       "Payments settle in seconds, directly to your wallet. We never hold your funds.",
     href: "#",
     cta: "Learn more",
     className: "col-span-3 lg:col-span-1",
     background: (
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-cyan-500/5 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[#25f478]/10 via-[#00ff88]/5 to-transparent opacity-30" />
     ),
   },
   {
@@ -42,7 +44,7 @@ const features = [
     cta: "Learn more",
     className: "col-span-3 lg:col-span-1",
     background: (
-      <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-green-500/5 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[#25f478]/10 via-[#00ff88]/5 to-transparent opacity-30" />
     ),
   },
   {
@@ -54,7 +56,7 @@ const features = [
     cta: "Learn more",
     className: "col-span-3 lg:col-span-1",
     background: (
-      <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-amber-500/5 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[#25f478]/10 via-[#00ff88]/5 to-transparent opacity-30" />
     ),
   },
   {
@@ -66,7 +68,7 @@ const features = [
     cta: "Learn more",
     className: "col-span-3 lg:col-span-1",
     background: (
-      <div className="absolute inset-0 bg-gradient-to-br from-violet-500/10 via-purple-500/5 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[#25f478]/10 via-[#00ff88]/5 to-transparent opacity-50" />
     ),
   },
 ];
@@ -74,15 +76,15 @@ const features = [
 export const Features = () => {
   return (
     <section
-      className="mt-24 border-t border-border-dark/50 pt-16 px-4"
+      className="mt-24 border-t border-[#27272a] pt-16 px-4"
       id="features"
     >
       {/* Section Title */}
       <div className="mb-12 text-center">
-        <p className="mb-4 font-mono text-xs uppercase tracking-widest text-text-dim/60">
+        <p className="mb-4 font-mono text-xs uppercase tracking-widest text-[#25f478]">
           Features
         </p>
-        <h2 className="text-4xl font-bold text-white md:text-5xl">
+        <h2 className="text-4xl font-bold font-heading text-white md:text-5xl">
           Everything You Need
         </h2>
       </div>
@@ -90,12 +92,19 @@ export const Features = () => {
       {/* Bento Grid */}
       <div className="max-w-7xl mx-auto">
         <BentoGrid>
-          {features.map((feature) => {
+          {features.map((feature, index) => {
             const { className, ...cardProps } = feature;
             return (
-              <div key={feature.name} className={className}>
-                <BentoCard {...cardProps} className="" />
-              </div>
+              <motion.div
+                key={feature.name}
+                className={className}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
+              >
+                <BentoCard {...cardProps} className="h-full" />
+              </motion.div>
             );
           })}
         </BentoGrid>
