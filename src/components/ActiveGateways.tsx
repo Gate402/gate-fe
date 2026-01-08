@@ -71,10 +71,11 @@ const columns: ColumnDef<Gateway>[] = [
         },
     },
     {
-        accessorKey: "revenue24h", // Using revenue24h as a proxy for now since API doesn't return 30d yet
-        header: "Revenue (30d)",
-        cell: () => {
-            return <div className="text-white font-medium">$0.00</div>;
+        accessorKey: "revenue24h",
+        header: "Revenue (Total)",
+        cell: ({ row }) => {
+            const amount = row.original.revenue24h?.usd || 0;
+            return <div className="text-white font-medium">${new Intl.NumberFormat("en-US", { minimumFractionDigits: 2 }).format(amount)}</div>;
         },
     }
 ];
@@ -87,18 +88,19 @@ const ActiveGateways: React.FC = () => {
     useEffect(() => {
         const fetchGateways = async () => {
             try {
-                const response = await gatewaysApi.getAll();
+                const response = await gatewaysApi.getAllWithStats();
                 const mappedData: Gateway[] = response.map((gw: any) => ({
                     id: gw.id,
                     name: gw.subdomain || "Unnamed Gateway",
                     status: gw.status || "active",
                     subdomain: gw.subdomain,
-                    requests24h: 0,
+                    requests24h: gw.totalRequests || 0,
+                    successfulPayments: gw.successfulPayments || 0,
                     revenue24h: {
                         eth: 0,
-                        usd: 0,
+                        usd: gw.totalRevenue || 0,
                     },
-                    conversion: 0,
+                    conversion: gw.totalRequests > 0 ? (gw.successfulPayments / gw.totalRequests) * 100 : 0,
                     paymentScheme: gw.paymentScheme
                 }));
                 setGateways(mappedData);

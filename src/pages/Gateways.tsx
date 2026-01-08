@@ -42,22 +42,9 @@ const Gateways: React.FC = () => {
 
   const fetchGateways = async () => {
     try {
-      const response = await gatewaysApi.getAll();
+      const response = await gatewaysApi.getAllWithStats();
       // Map the API response to match the Gateway type expected by the table
-      const mappedData: Gateway[] = response.map((gw: any) => ({
-        id: gw.id,
-        name: gw.subdomain || "Unnamed Gateway", // Use subdomain as name for now
-        status: gw.status || "active",
-        subdomain: gw.subdomain,
-        // Placeholder values for stats not yet provided by this endpoint
-        requests24h: 0, 
-        revenue24h: {
-          eth: 0,
-          usd: 0,
-        },
-        conversion: 0,
-      }));
-      setData(mappedData);
+      setData(response);
     } catch (error) {
       console.error("Failed to fetch gateways:", error);
       toast.error("Failed to load gateways");
@@ -128,7 +115,7 @@ const Gateways: React.FC = () => {
               <div className="flex items-center gap-3">
                 {statusIndicator}
                 <div className="flex flex-col">
-                  <span className="font-bold text-white text-base">{gateway.name}</span>
+                  <span className="font-bold text-white text-base">{gateway.subdomain}</span>
                   <span className="font-mono text-xs text-text-dim">ID: {gateway.id}</span>
                 </div>
               </div>
@@ -158,7 +145,7 @@ const Gateways: React.FC = () => {
           }
         },
         {
-          accessorKey: "requests24h",
+          accessorKey: "totalRequests",
           header: ({ column }) => {
               return (
                   <div className="text-right">
@@ -166,20 +153,20 @@ const Gateways: React.FC = () => {
                           variant="ghost"
                           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                       >
-                          Requests (24h)
+                          Requests (Total)
                           <ArrowUpDown className="ml-2 h-4 w-4" />
                       </Button>
                   </div>
               )
           },
           cell: ({ row }) => {
-            const amount = parseFloat(row.getValue("requests24h"));
+            const amount = parseFloat(row.getValue("totalRequests"));
             const formatted = new Intl.NumberFormat("en-US").format(amount);
             return <div className="text-right font-mono text-white font-medium">{formatted}</div>;
           },
         },
         {
-          accessorKey: "revenue24h",
+          accessorKey: "totalRevenue",
           header: ({ column }) => {
               return (
                   <div className="text-right">
@@ -187,18 +174,17 @@ const Gateways: React.FC = () => {
                           variant="ghost"
                           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                       >
-                          Revenue (24h)
+                          Revenue (Total)
                           <ArrowUpDown className="ml-2 h-4 w-4" />
                       </Button>
                   </div>
               )
           },
           cell: ({ row }) => {
-              const revenue = row.original.revenue24h;
+              const revenue = row.original.totalRevenue;
               return (
                   <div className="text-right">
-                      <div className="font-mono text-white font-medium">{revenue.eth} ETH</div>
-                      <div className="text-xs text-text-dim">≈ ${new Intl.NumberFormat("en-US").format(revenue.usd)}</div>
+                      <div className="font-mono text-white font-medium">${new Intl.NumberFormat("en-US", { minimumFractionDigits: 2 }).format(revenue)}</div>
                   </div>
               )
           }
@@ -219,7 +205,14 @@ const Gateways: React.FC = () => {
               )
           },
           cell: ({ row }) => {
-              return <div className="text-right font-medium text-primary">{row.original.conversion}%</div>
+              const gateway = row.original;
+              const conversionRate = gateway.totalRequests === 0 ? 0 : (gateway.successfulPayments / gateway.totalRequests * 100).toFixed(2);
+              return (
+                  <div className="text-right">
+                      <div className="font-medium text-primary">{conversionRate}%</div>
+                      <div className="text-xs text-text-dim font-mono">{gateway.successfulPayments} / {gateway.totalRequests}</div>
+                  </div>
+              )
           }
         },
         {

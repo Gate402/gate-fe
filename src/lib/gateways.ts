@@ -1,4 +1,5 @@
 import api from './api';
+import { type Gateway } from '../types/gateway';
 
 export interface QuickCreateGatewayRequest {
   originUrl: string;
@@ -30,12 +31,17 @@ export const gatewaysApi = {
     return response.data;
   },
   
-  getAll: async () => {
+  getAll: async (): Promise<Gateway[]> => {
     const response = await api.get('/gateways');
     return response.data;
   },
 
-  getById: async (id: string) => {
+  getAllWithStats: async (): Promise<Gateway[]> => {
+    const response = await api.get('/gateways/with-stats');
+    return response.data;
+  },
+
+  getById: async (id: string): Promise<Gateway> => {
     const response = await api.get(`/gateways/${id}`);
     return response.data;
   },
