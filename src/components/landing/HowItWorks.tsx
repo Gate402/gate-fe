@@ -43,24 +43,67 @@ const steps: Step[] = [
   },
 ];
 
+const VisualizationContainer = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => (
+  <div className="rounded-xl border border-[#27272a] bg-[#18181b]/80 backdrop-blur-md p-1 shadow-2xl">
+    <div className="rounded-lg border border-[#27272a] bg-[#0f0f11] p-6 h-full">
+      {children}
+    </div>
+  </div>
+);
+
 // Visualization for Step 1
 const Step1Visualization = () => (
-  <div className="rounded-lg border border-border-dark/50 bg-slate-900/50 backdrop-blur-sm p-6">
-    <p className="mb-2 font-mono text-xs text-text-dim/60">Origin API:</p>
-    <code className="block rounded bg-slate-800/50 px-4 py-3 font-mono text-sm text-primary">
+  <VisualizationContainer>
+    <div className="flex items-center gap-2 mb-4 border-b border-[#27272a] pb-2">
+      <div className="flex gap-1.5">
+        <div className="w-2.5 h-2.5 rounded-full bg-[#27272a]" />
+        <div className="w-2.5 h-2.5 rounded-full bg-[#27272a]" />
+        <div className="w-2.5 h-2.5 rounded-full bg-[#27272a]" />
+      </div>
+      <div className="text-[10px] text-[#a1a1aa] font-mono ml-2">bash</div>
+    </div>
+    <p className="mb-2 font-mono text-xs text-[#25f478]">➜ ~ curl GET</p>
+    <code className="block mt-2 font-mono text-sm text-white">
       https://api.yourapp.com/weather
     </code>
-  </div>
+    <div className="mt-4 p-3 rounded border border-[#27272a] bg-[#18181b]/50">
+      <code className="font-mono text-xs text-[#a1a1aa]">
+        {"{"} "temp": 24, "unit": "celsius" {"}"}
+      </code>
+    </div>
+  </VisualizationContainer>
 );
 
 // Visualization for Step 2
 const Step2Visualization = () => (
-  <div className="rounded-lg border border-border-dark/50 bg-slate-900/50 backdrop-blur-sm p-6">
-    <p className="mb-2 font-mono text-xs text-text-dim/60">Your Gateway:</p>
-    <code className="block rounded bg-slate-800/50 px-4 py-3 font-mono text-sm text-purple-400">
-      https://yourapp.gate402.io
-    </code>
-  </div>
+  <VisualizationContainer>
+    <div className="flex items-center justify-between mb-6">
+      <p className="font-mono text-xs text-[#a1a1aa]">GATEWAY STATUS</p>
+      <div className="flex items-center gap-2">
+        <span className="relative flex h-2 w-2">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#25f478] opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-[#25f478]"></span>
+        </span>
+        <span className="text-[10px] font-mono text-[#25f478]">ACTIVE</span>
+      </div>
+    </div>
+    <div className="space-y-4">
+      <div className="p-3 rounded border border-[#25f478]/30 bg-[#25f478]/5">
+        <p className="text-[10px] text-[#25f478] mb-1 font-mono">GATEWAY URL</p>
+        <code className="font-mono text-sm text-white">
+          https://yourapp.gate402.io
+        </code>
+      </div>
+      <div className="flex gap-2 text-[10px] font-mono text-[#a1a1aa]">
+        <span className="px-2 py-1 rounded bg-[#27272a]">SSL: AUTO</span>
+        <span className="px-2 py-1 rounded bg-[#27272a]">X402: ON</span>
+      </div>
+    </div>
+  </VisualizationContainer>
 );
 
 // Visualization for Step 3
@@ -71,46 +114,50 @@ const Step3Visualization = ({
   selectedPrice: number | string;
   setSelectedPrice: (v: number | string) => void;
 }) => (
-  <div className="rounded-lg border border-border-dark/50 bg-slate-900/50 backdrop-blur-sm p-6">
-    <p className="mb-4 font-mono text-xs text-text-dim/60">
-      Price per request:
+  <VisualizationContainer>
+    <p className="mb-4 font-mono text-xs text-[#a1a1aa]">
+      CONFIGURE PRICE PER CALL
     </p>
-    <div className="space-y-2">
+    <div className="space-y-3">
       {priceOptions.map((option) => (
         <button
           key={option.label}
           onClick={() => setSelectedPrice(option.value)}
-          className={`w-full flex items-center gap-3 rounded px-4 py-3 text-left transition-all ${
+          className={`w-full group flex items-center justify-between rounded-lg px-4 py-3 text-left transition-all duration-300 ${
             selectedPrice === option.value
-              ? "bg-primary/10 border border-primary/50"
-              : "bg-slate-800/30 border border-transparent hover:bg-slate-800/50"
+              ? "bg-[#25f478]/10 border border-[#25f478]"
+              : "bg-[#18181b] border border-[#27272a] hover:border-[#25f478]/50"
           }`}
         >
-          <div
-            className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full border-2 ${
-              selectedPrice === option.value
-                ? "border-primary bg-primary"
-                : "border-text-dim/30"
-            }`}
-          >
-            {selectedPrice === option.value && (
-              <IconCheck size={10} className="text-white" />
-            )}
-          </div>
-          <div className="flex-1">
-            <span className="font-mono text-sm font-semibold text-white">
+          <div className="flex items-center gap-3">
+            <div
+              className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full border transition-colors ${
+                selectedPrice === option.value
+                  ? "border-[#25f478] bg-[#25f478]"
+                  : "border-[#27272a] group-hover:border-[#25f478]/50"
+              }`}
+            >
+              {selectedPrice === option.value && (
+                <IconCheck size={10} className="text-black" />
+              )}
+            </div>
+            <span
+              className={`font-mono text-sm font-semibold transition-colors ${
+                selectedPrice === option.value ? "text-white" : "text-[#a1a1aa]"
+              }`}
+            >
               {option.label}
             </span>
-            {option.description && (
-              <span className="ml-2 font-sans text-xs text-text-dim/60">
-                {option.description}
-              </span>
-            )}
           </div>
+          {option.description && (
+            <span className="text-[10px] uppercase font-mono text-[#25f478]/60">
+              {option.description}
+            </span>
+          )}
         </button>
       ))}
     </div>
-  </div>
+  </VisualizationContainer>
 );
 
 // Visualization for Step 4 with continuous animation
@@ -119,172 +166,89 @@ const Step4Visualization = () => {
     scale: [1, 1.1, 1],
     opacity: [0.5, 1, 0.5],
     boxShadow: [
-      "0 0 0 0 rgba(59, 130, 246, 0.4)",
-      "0 0 0 20px rgba(59, 130, 246, 0)",
-      "0 0 0 0 rgba(59, 130, 246, 0)",
+      "0 0 0 0 rgba(37, 244, 120, 0.2)",
+      "0 0 0 10px rgba(37, 244, 120, 0)",
+      "0 0 0 0 rgba(37, 244, 120, 0)",
     ],
   };
 
   const arrowAnimation = {
-    opacity: [0.4, 1, 0.4],
+    opacity: [0.2, 1, 0.2],
+    color: ["#27272a", "#25f478", "#27272a"],
   };
 
   return (
-    <div className="rounded-lg border border-border-dark/50 bg-slate-900/50 backdrop-blur-sm p-8">
-      <div className="flex items-center justify-between gap-4">
-        {/* Client */}
-        <div className="flex flex-col items-center gap-2">
-          <motion.div
-            className="rounded-full bg-blue-500/10 p-3"
-            animate={pulseAnimation}
-            transition={{
-              duration: 1,
-              repeat: Infinity,
-              repeatDelay: 3,
-              delay: 0,
-            }}
-          >
-            <svg
-              className="h-6 w-6 text-blue-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+    <VisualizationContainer>
+      <div className="flex flex-col h-full justify-center gap-6">
+        <div className="flex items-center justify-between gap-2">
+          {/* Client */}
+          <div className="flex flex-col items-center gap-2">
+            <motion.div
+              className="rounded-full border border-[#27272a] bg-[#18181b] p-3 text-white"
+              animate={pulseAnimation}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                delay: 0,
+              }}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-              />
-            </svg>
-          </motion.div>
-          <span className="text-xs text-text-dim">Client</span>
+              <IconArrowRight size={20} className="rotate-45" />
+            </motion.div>
+            <span className="text-[10px] font-mono text-[#a1a1aa]">REQ</span>
+          </div>
+
+          <motion.div
+            animate={arrowAnimation}
+            className="flex-1 h-px bg-current"
+            transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
+          />
+
+          {/* Gate */}
+          <div className="flex flex-col items-center gap-2">
+            <motion.div
+              className="rounded-full bg-[#25f478]/10 border border-[#25f478] p-3 shadow-[0_0_15px_-3px_rgba(37,244,120,0.3)]"
+              animate={pulseAnimation}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                delay: 1,
+              }}
+            >
+              <div className="text-[#25f478] font-bold text-xs">402</div>
+            </motion.div>
+            <span className="text-[10px] font-mono text-[#25f478]">PAID</span>
+          </div>
+
+          <motion.div
+            animate={arrowAnimation}
+            className="flex-1 h-px bg-current"
+            transition={{ duration: 2, repeat: Infinity, delay: 1.5 }}
+          />
+
+          {/* API */}
+          <div className="flex flex-col items-center gap-2">
+            <motion.div
+              className="rounded-full border border-[#27272a] bg-[#18181b] p-3 text-white"
+              animate={pulseAnimation}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                delay: 2,
+              }}
+            >
+              <IconCheck size={20} />
+            </motion.div>
+            <span className="text-[10px] font-mono text-[#a1a1aa]">200 OK</span>
+          </div>
         </div>
 
-        <motion.div
-          animate={arrowAnimation}
-          transition={{
-            duration: 1,
-            repeat: Infinity,
-            repeatDelay: 3,
-            delay: 0.5,
-          }}
-        >
-          <IconArrowRight className="text-text-dim/40" size={20} />
-        </motion.div>
-
-        {/* Pay */}
-        <div className="flex flex-col items-center gap-2">
-          <motion.div
-            className="rounded-full bg-primary/10 p-3"
-            animate={pulseAnimation}
-            transition={{
-              duration: 1,
-              repeat: Infinity,
-              repeatDelay: 3,
-              delay: 1,
-            }}
-          >
-            <svg
-              className="h-6 w-6 text-primary"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-          </motion.div>
-          <span className="text-xs text-text-dim">Pay</span>
-        </div>
-
-        <motion.div
-          animate={arrowAnimation}
-          transition={{
-            duration: 1,
-            repeat: Infinity,
-            repeatDelay: 3,
-            delay: 1.5,
-          }}
-        >
-          <IconArrowRight className="text-text-dim/40" size={20} />
-        </motion.div>
-
-        {/* Access API */}
-        <div className="flex flex-col items-center gap-2">
-          <motion.div
-            className="rounded-full bg-purple-500/10 p-3"
-            animate={pulseAnimation}
-            transition={{
-              duration: 1,
-              repeat: Infinity,
-              repeatDelay: 3,
-              delay: 2,
-            }}
-          >
-            <svg
-              className="h-6 w-6 text-purple-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-              />
-            </svg>
-          </motion.div>
-          <span className="text-xs text-text-dim">Access API</span>
-        </div>
-
-        <motion.div
-          animate={arrowAnimation}
-          transition={{
-            duration: 1,
-            repeat: Infinity,
-            repeatDelay: 3,
-            delay: 2.5,
-          }}
-        >
-          <IconArrowRight className="text-text-dim/40" size={20} />
-        </motion.div>
-
-        {/* You earn */}
-        <div className="flex flex-col items-center gap-2">
-          <motion.div
-            className="rounded-full bg-emerald-500/10 p-3"
-            animate={pulseAnimation}
-            transition={{
-              duration: 1,
-              repeat: Infinity,
-              repeatDelay: 3,
-              delay: 3,
-            }}
-          >
-            <svg
-              className="h-6 w-6 text-emerald-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-          </motion.div>
-          <span className="text-xs text-text-dim">You earn</span>
+        <div className="bg-[#25f478]/5 border border-[#25f478]/20 rounded p-2 text-center">
+          <p className="font-mono text-[10px] text-[#25f478] tracking-widest uppercase animate-pulse">
+            Settled on Chain
+          </p>
         </div>
       </div>
-    </div>
+    </VisualizationContainer>
   );
 };
 
@@ -297,15 +261,16 @@ const ProgressDot = ({
   progress: MotionValue<number>;
 }) => {
   const opacity = useTransform(progress, [0, 1], [0.3, 1]);
-  const scale = useTransform(progress, [0, 1], [0.5, 1]);
+  const scale = useTransform(progress, [0, 1], [0.8, 1]); // Adjusted scale base
+  const color = useTransform(progress, [0, 1], ["#27272a", "#25f478"]);
 
   return (
     <motion.div className="flex items-center gap-2" style={{ opacity }}>
       <motion.div
-        className="w-2 h-2 rounded-full bg-primary"
-        style={{ scale }}
+        className="w-2 h-2 rounded-full"
+        style={{ scale, backgroundColor: color }}
       />
-      <span className="text-xs font-mono text-text-dim/60 hidden lg:block">
+      <span className="text-xs font-mono text-[#a1a1aa] hidden lg:block">
         {number}
       </span>
     </motion.div>
@@ -320,12 +285,14 @@ const StepContent = ({ step, isLeft }: { step: Step; isLeft: boolean }) => (
         isLeft ? "" : "md:flex-row-reverse"
       }`}
     >
-      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 font-mono text-lg font-bold text-primary">
+      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#25f478]/10 border border-[#25f478]/30 font-mono text-lg font-bold text-[#25f478]">
         {step.number}
       </div>
-      <h3 className="text-2xl font-bold text-white">{step.title}</h3>
+      <h3 className="text-2xl font-bold font-heading text-white">
+        {step.title}
+      </h3>
     </div>
-    <p className="text-lg text-text-dim leading-relaxed max-w-md">
+    <p className="text-lg text-[#a1a1aa] leading-relaxed max-w-md">
       {step.description}
     </p>
   </div>
@@ -360,6 +327,28 @@ export const HowItWorks = () => {
     scrollYProgress,
     [0.6, 0.65, 0.8, 0.85],
     [0, 1, 1, 0]
+  );
+
+  // Scale transforms (0.7 -> 1)
+  const step1Scale = useTransform(
+    scrollYProgress,
+    [0, 0.12, 0.17],
+    [1, 1, 0.7] // Start at 1 because it's the first one, fade out to 0.7
+  );
+  const step2Scale = useTransform(
+    scrollYProgress,
+    [0.17, 0.22, 0.3, 0.35],
+    [0.7, 1, 1, 0.7]
+  );
+  const step3Scale = useTransform(
+    scrollYProgress,
+    [0.35, 0.4, 0.55, 0.6],
+    [0.7, 1, 1, 0.7]
+  );
+  const step4Scale = useTransform(
+    scrollYProgress,
+    [0.6, 0.65, 0.8, 0.85],
+    [0.7, 1, 1, 0.7]
   );
 
   // Text content transforms for each step
@@ -424,7 +413,7 @@ export const HowItWorks = () => {
   return (
     <div
       ref={containerRef}
-      className="relative mt-24 border-t border-border-dark/50"
+      className="relative mt-24 border-t border-[#27272a]"
       style={{ height: "1000vh" }}
       id="how-it-works"
     >
@@ -437,10 +426,10 @@ export const HowItWorks = () => {
             opacity: useTransform(scrollYProgress, [0, 0.02], [1, 0]),
           }}
         >
-          <p className="mb-4 font-mono text-xs uppercase tracking-widest text-text-dim/60">
+          <p className="mb-4 font-mono text-xs uppercase tracking-widest text-[#25f478]">
             How it works
           </p>
-          <h2 className="text-4xl font-bold text-white md:text-5xl">
+          <h2 className="text-4xl font-bold font-heading text-white md:text-5xl">
             Four Steps to Monetization
           </h2>
         </motion.div>
@@ -461,12 +450,13 @@ export const HowItWorks = () => {
             style={{
               opacity: step1TextOpacity,
               y: step1Y,
+              scale: step1Scale,
               pointerEvents: step1Pointer,
             }}
           >
             <StepContent step={steps[0]} isLeft={true} />
             <div className="relative group">
-              <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-purple-500/20 rounded-lg blur opacity-25 group-hover:opacity-50 transition duration-500" />
+              <div className="absolute -inset-1 bg-gradient-to-r from-[#25f478]/20 to-[#00ff88]/20 rounded-lg blur opacity-25 group-hover:opacity-50 transition duration-500" />
               <div className="relative">
                 <motion.div style={{ opacity: step1Opacity }}>
                   <Step1Visualization />
@@ -481,11 +471,12 @@ export const HowItWorks = () => {
             style={{
               opacity: step2TextOpacity,
               y: step2Y,
+              scale: step2Scale,
               pointerEvents: step2Pointer,
             }}
           >
             <div className="relative group md:order-1">
-              <div className="absolute -inset-1 bg-gradient-to-r from-purple-500/20 to-primary/20 rounded-lg blur opacity-25 group-hover:opacity-50 transition duration-500" />
+              <div className="absolute -inset-1 bg-gradient-to-r from-[#25f478]/20 to-[#00ff88]/20 rounded-lg blur opacity-25 group-hover:opacity-50 transition duration-500" />
               <div className="relative">
                 <motion.div style={{ opacity: step2Opacity }}>
                   <Step2Visualization />
@@ -503,12 +494,13 @@ export const HowItWorks = () => {
             style={{
               opacity: step3TextOpacity,
               y: step3Y,
+              scale: step3Scale,
               pointerEvents: step3Pointer,
             }}
           >
             <StepContent step={steps[2]} isLeft={true} />
             <div className="relative group">
-              <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-emerald-500/20 rounded-lg blur opacity-25 group-hover:opacity-50 transition duration-500" />
+              <div className="absolute -inset-1 bg-gradient-to-r from-[#25f478]/20 to-[#00ff88]/20 rounded-lg blur opacity-25 group-hover:opacity-50 transition duration-500" />
               <div className="relative">
                 <motion.div style={{ opacity: step3Opacity }}>
                   <Step3Visualization
@@ -526,11 +518,12 @@ export const HowItWorks = () => {
             style={{
               opacity: step4TextOpacity,
               y: step4Y,
+              scale: step4Scale,
               pointerEvents: step4Pointer,
             }}
           >
             <div className="relative group md:order-1">
-              <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500/20 to-primary/20 rounded-lg blur opacity-25 group-hover:opacity-50 transition duration-500" />
+              <div className="absolute -inset-1 bg-gradient-to-r from-[#25f478]/20 to-[#00ff88]/20 rounded-lg blur opacity-25 group-hover:opacity-50 transition duration-500" />
               <div className="relative">
                 <motion.div style={{ opacity: step4Opacity }}>
                   <Step4Visualization />
@@ -554,10 +547,10 @@ export const HowItWorks = () => {
           ),
         }}
       >
-        <h3 className="text-4xl md:text-6xl font-bold text-white mb-4">
+        <h3 className="text-4xl md:text-6xl font-bold font-heading text-white mb-4">
           Ready to Get Paid?
         </h3>
-        <p className="text-xl md:text-2xl text-text-dim max-w-xl">
+        <p className="text-xl md:text-2xl text-[#a1a1aa] max-w-xl">
           Your API. Your price. Instant payments.
         </p>
       </motion.div>

@@ -83,12 +83,22 @@ const FAQAccordionItem = ({
   onToggle: () => void;
 }) => {
   return (
-    <div className="rounded-lg border border-border-dark/50 bg-card-dark/20 backdrop-blur-sm overflow-hidden">
+    <div
+      className={`rounded-lg border transition-all duration-300 overflow-hidden ${
+        isOpen
+          ? "border-[#25f478] bg-[#18181b] shadow-[0_0_15px_-3px_rgba(37,244,120,0.15)]"
+          : "border-[#27272a] bg-[#18181b]/30 hover:border-[#25f478]/50"
+      }`}
+    >
       <button
         onClick={onToggle}
-        className="w-full px-6 py-4 text-left flex items-start justify-between gap-4 hover:bg-card-dark/40 transition-colors duration-200"
+        className="w-full px-6 py-4 text-left flex items-start justify-between gap-4 transition-colors duration-200"
       >
-        <span className="font-semibold text-white text-sm md:text-base">
+        <span
+          className={`font-heading font-medium text-base md:text-lg transition-colors duration-300 ${
+            isOpen ? "text-[#25f478]" : "text-white"
+          }`}
+        >
           {item.question}
         </span>
         <motion.div
@@ -96,7 +106,11 @@ const FAQAccordionItem = ({
           transition={{ duration: 0.2 }}
           className="shrink-0 mt-1"
         >
-          <IconChevronDown className="h-5 w-5 text-text-dim" />
+          <IconChevronDown
+            className={`h-5 w-5 transition-colors duration-300 ${
+              isOpen ? "text-[#25f478]" : "text-[#a1a1aa]"
+            }`}
+          />
         </motion.div>
       </button>
       <AnimatePresence initial={false}>
@@ -108,7 +122,7 @@ const FAQAccordionItem = ({
             transition={{ duration: 0.2 }}
             className="overflow-hidden"
           >
-            <div className="px-6 pb-4 pt-2 text-text-dim text-sm md:text-base leading-relaxed">
+            <div className="px-6 pb-6 pt-0 text-[#a1a1aa] text-sm md:text-base leading-relaxed">
               {item.answer}
             </div>
           </motion.div>
@@ -137,19 +151,19 @@ export const FAQ = () => {
   const secondColumn = faqData.slice(midpoint);
 
   return (
-    <section className="mt-24 border-t border-border-dark/50 pt-16" id="faq">
+    <section className="mt-24 border-t border-[#27272a] pt-16 px-4" id="faq">
       {/* Section Header */}
-      <div className="mb-12 text-center">
-        <p className="mb-4 font-mono text-xs uppercase tracking-widest text-text-dim/60">
+      <div className="mb-16 text-center">
+        <p className="mb-4 font-mono text-xs uppercase tracking-widest text-[#25f478]">
           Got Questions?
         </p>
-        <h2 className="text-4xl font-bold text-white md:text-5xl">
+        <h2 className="text-4xl font-bold font-heading text-white md:text-5xl">
           Frequently Asked Questions
         </h2>
       </div>
 
       {/* Two-column layout for desktop, single column for mobile */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto">
         {/* First Column */}
         <div className="space-y-4">
           {firstColumn.map((item, index) => (
@@ -162,7 +176,7 @@ export const FAQ = () => {
           ))}
         </div>
 
-        {/* Second Column - Hidden on mobile */}
+        {/* Second Column */}
         <div className="space-y-4">
           {secondColumn.map((item, index) => {
             const actualIndex = index + midpoint;
