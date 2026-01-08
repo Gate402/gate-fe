@@ -14,6 +14,7 @@ interface AuthContextType {
   isLoading: boolean;
   login: (userData: User, accessToken: string, refreshToken: string) => void;
   logout: () => void;
+  updateUser: (userData: User) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -44,7 +45,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         if (storedUser) {
           try {
             setUser(JSON.parse(storedUser));
-          } catch (e) {
+          }
+          catch (e) {
             console.error("Failed to parse stored user", e);
           }
         }
@@ -69,11 +71,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     localStorage.removeItem('user');
     setUser(null);
     setIsAuthenticated(false);
-    window.location.href = '/login'; 
+    window.location.href = '/'; 
+  };
+
+  const updateUser = (userData: User) => {
+    localStorage.setItem('user', JSON.stringify(userData));
+    setUser(userData);
   };
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, isLoading, login, logout }}>
+    <AuthContext.Provider value={{ user, isAuthenticated, isLoading, login, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   );

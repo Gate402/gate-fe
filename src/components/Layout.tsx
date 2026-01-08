@@ -15,6 +15,16 @@ import {
 import { Waypoints } from "lucide-react";
 import Header from "./Header";
 import { useAuth } from "@/context/AuthContext";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuTrigger 
+} from "@/components/ui/dropdown-menu";
+import { LogOut, User } from "lucide-react";
+import UpdateProfileModal from "./UpdateProfileModal";
+import { Dialog } from "@/components/ui/dialog";
 
 const links = (activeLink: string) => [
     {
@@ -62,7 +72,25 @@ const links = (activeLink: string) => [
   ];
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpenState] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+
+  const setOpen: React.Dispatch<React.SetStateAction<boolean>> = (value) => {
+    if (isDropdownOpen) {
+       // Prevent sidebar from closing if dropdown is open
+       if (value === false) return;
+       if (typeof value === 'function') {
+           setOpenState(prev => {
+              const result = value(prev);
+              return result === false ? true : result;
+           });
+           return;
+       }
+    }
+    setOpenState(value);
+  };
+
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -86,7 +114,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   };
 
   const activeLink = getActiveLink(location.pathname);
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
 
   return (
     <div className="flex h-full">
@@ -117,7 +145,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                     className={cn(
                       "cursor-pointer",
                       activeLink === link.label
-                        ? "bg-primary/10 rounded-lg px-3 py-2"
+                        ? (open ? "bg-primary/10 rounded-lg px-3 py-2" : "bg-primary/10 rounded-lg px-3 py-0")
                         : "px-3 py-2",
                       !open ? "w-full flex justify-center" : ""
                     )}
@@ -129,30 +157,46 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             </div>
           </div>
           <div className="border-t mt-4 pt-4">
-            <SidebarLink
-              link={{
-                label: `${user?.name || "Anonymous"}\n${
-                  user?.evmAddress
-                    ? `${user.evmAddress.slice(0, 6)}...${user.evmAddress.slice(
-                        -4
-                      )}`
-                    : ""
-                }`,
-                href: "#",
-                icon: (
-                  <img
-                    src="https://assets.aceternity.com/manu.png"
-                    className="h-7 w-7 shrink-0 rounded-full"
-                    width={50}
-                    height={50}
-                    alt="Avatar"
+             <DropdownMenu onOpenChange={setIsDropdownOpen}>
+              <DropdownMenuTrigger asChild>
+                <div className="w-full cursor-pointer hover:bg-white/5 rounded-lg transition-colors">
+                  <SidebarLink
+                    link={{
+                      label: `${user?.name || "Anonymous"}\n${
+                        user?.evmAddress
+                          ? `${user.evmAddress.slice(0, 6)}...${user.evmAddress.slice(
+                              -4
+                            )}`
+                          : ""
+                      }`,
+                      href: "#",
+                      icon: (
+                        <Avatar className="h-7 w-7 shrink-0">
+                          <AvatarImage src="/Logo.png" alt="Avatar" />
+                          <AvatarFallback>{(user?.name || user?.email || "A").charAt(0).toUpperCase()}</AvatarFallback>
+                        </Avatar>
+                      ),
+                    }}
                   />
-                ),
-              }}
-            />
+                </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56 bg-background-dark border-border-dark text-white" align="start" side="right" sideOffset={10}>
+                <DropdownMenuItem className="cursor-pointer" onClick={() => setIsProfileModalOpen(true)}>
+                  <User className="mr-2 h-4 w-4" />
+                  <span>Update Profile</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="text-red-500 focus:text-red-500 focus:bg-red-500/10 cursor-pointer" onClick={logout}>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Log out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </SidebarBody>
       </Sidebar>
+      <Dialog open={isProfileModalOpen} onOpenChange={setIsProfileModalOpen}>
+        <UpdateProfileModal setOpen={setIsProfileModalOpen} />
+      </Dialog>
       <motion.div
         className="flex-1 flex flex-col min-h-screen"
         animate={{

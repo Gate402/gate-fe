@@ -165,7 +165,7 @@ export function DataTable<TData, TValue>({
         </div>
          <div className="flex items-center justify-between px-6 py-4 bg-surface-dark border-t border-border-dark">
             <div className="text-sm text-text-dim">
-                Showing <span className="font-medium text-white">1-{table.getRowModel().rows.length}</span> of <span className="font-medium text-white">{table.getCoreRowModel().rows.length}</span> gateways
+                Showing <span className="font-medium text-white">{table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1}-{table.getState().pagination.pageIndex * table.getState().pagination.pageSize + table.getRowModel().rows.length}</span> of <span className="font-medium text-white">{table.getCoreRowModel().rows.length}</span> gateways
             </div>
             <div className="flex gap-2">
                 <Button variant="outline" size="sm" className="text-text-dim border-border-dark hover:bg-background-dark hover:text-white" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>Previous</Button>
