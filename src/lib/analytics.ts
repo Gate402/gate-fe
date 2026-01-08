@@ -9,9 +9,13 @@ import {
 } from '../types/analytics';
 
 export const analyticsApi = {
-  getOverview: async (gatewayId: string, startDate?: string, endDate?: string) : Promise<GatewayOverviewResponse> => {
+  getOverview: async (gatewayId?: string, startDate?: string, endDate?: string): Promise<GatewayOverviewResponse> => {
     const response = await api.get('/analytics/overview', {
-      params: { gatewayId, startDate, endDate }
+      params: { 
+        gatewayId: gatewayId,
+        startDate: startDate, 
+        endDate: endDate 
+    }
     });
     return response.data;
   },

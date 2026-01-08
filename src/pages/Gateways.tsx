@@ -19,9 +19,11 @@ import ActiveGatewaysStatCard from '@/components/ActiveGatewaysStatCard';
 import AvgLatencyStatCard from '@/components/AvgLatencyStatCard';
 import { type Gateway } from '@/types/gateway';
 import { gatewaysApi } from '@/lib/gateways';
+import { analyticsApi } from '@/lib/analytics';
+import { type GatewayOverviewResponse } from '@/types/analytics';
 import { toast } from 'sonner';
 import { 
-  Dialog, 
+  Dialog,  
   DialogContent, 
   DialogHeader, 
   DialogTitle, 
@@ -33,7 +35,9 @@ import GatewayDetailsModal from '@/components/GatewayDetailsModal';
 
 const Gateways: React.FC = () => {
   const [data, setData] = useState<Gateway[]>([]);
+  const [overview, setOverview] = useState<GatewayOverviewResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isOverviewLoading, setIsOverviewLoading] = useState(true);
   const [selectedGatewayId, setSelectedGatewayId] = useState<string | null>(null);
   const [detailsModalOpen, setDetailsModalOpen] = useState(false);
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
@@ -53,8 +57,20 @@ const Gateways: React.FC = () => {
     }
   };
 
+  const fetchOverview = async () => {
+    try {
+      const response = await analyticsApi.getOverview("6a7065af-3025-430f-bd4c-9497ec332f4a", undefined, undefined);
+      setOverview(response);
+    } catch (error) {
+      console.error("Failed to fetch overview:", error);
+    } finally {
+      setIsOverviewLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchGateways();
+    fetchOverview();
   }, []);
 
   const handleViewDetails = (id: string) => {
@@ -251,10 +267,10 @@ const Gateways: React.FC = () => {
         </div>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4">
-          <TotalRevenueStatCard />
-          <TotalRequestsStatCard />
-          <ActiveGatewaysStatCard activeGateways={data.length} pausedGateways={0} />
-          <AvgLatencyStatCard />
+          <TotalRevenueStatCard value={overview?.totalRevenue} isLoading={isOverviewLoading} />
+          <TotalRequestsStatCard value={overview?.totalRequests} isLoading={isOverviewLoading} />
+          <ActiveGatewaysStatCard activeGateways={data.length} pausedGateways={data.filter(g => g.status === 'paused').length} />
+          <AvgLatencyStatCard value={overview?.avgLatencyMs} isLoading={isOverviewLoading} />
       </div>
       <div className="px-4 pb-8">
         <div className="w-full overflow-hidden rounded-xl border border-border-dark bg-surface-dark/20 shadow-xl shadow-black/20">
