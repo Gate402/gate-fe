@@ -27,8 +27,7 @@ api.interceptors.response.use(
       if (refreshToken) {
         try {
           // Attempt to refresh tokens
-          // Adjust the endpoint URL to match your backend
-          const { data } = await api.post('/auth/refresh', { refreshToken });
+          const { data } = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/auth/refresh`, { refreshToken });
 
           // Store new tokens
           localStorage.setItem('accessToken', data.accessToken);
