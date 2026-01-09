@@ -16,60 +16,96 @@ import { Waypoints } from "lucide-react";
 import Header from "./Header";
 import { useAuth } from "@/context/AuthContext";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuTrigger 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { LogOut, User } from "lucide-react";
 import UpdateProfileModal from "./UpdateProfileModal";
 import { Dialog } from "@/components/ui/dialog";
 
 const links = (activeLink: string) => [
-    {
-      label: "Home",
-      href: "/dashboard",
-      icon: (
-        <IconHome className={`h-5 w-5 shrink-0 ${activeLink === 'Home' ? 'text-primary' : 'text-neutral-700 dark:text-neutral-200'}`} />
-      ),
-    },
-    {
-      label: "Gateways",
-      href: "/gateways",
-      icon: (
-        <IconServer className={`h-5 w-5 shrink-0 ${activeLink === 'Gateways' ? 'text-primary' : 'text-neutral-700 dark:text-neutral-200'}`} />
-      ),
-    },
-    {
-      label: "API Keys",
-      href: "/api-keys",
-      icon: (
-        <IconKey className={`h-5 w-5 shrink-0 ${activeLink === 'API Keys' ? 'text-primary' : 'text-neutral-700 dark:text-neutral-200'}`} />
-      ),
-    },
-    {
-      label: "Webhooks",
-      href: "/webhooks",
-      icon: (
-        <IconWebhook className={`h-5 w-5 shrink-0 ${activeLink === 'Webhooks' ? 'text-primary' : 'text-neutral-700 dark:text-neutral-200'}`} />
-      ),
-    },
-    {
-      label: "Transactions",
-      href: "/transactions",
-      icon: (
-        <IconHistory className={`h-5 w-5 shrink-0 ${activeLink === 'Transactions' ? 'text-primary' : 'text-neutral-700 dark:text-neutral-200'}`} />
-      ),
-    },
-    {
-        label: "Settings",
-        href: "/settings",
-        icon: (
-          <IconSettings className={`h-5 w-5 shrink-0 ${activeLink === 'Settings' ? 'text-primary' : 'text-neutral-700 dark:text-neutral-200'}`} />
-        ),
-    },
-  ];
+  {
+    label: "Home",
+    href: "/dashboard",
+    icon: (
+      <IconHome
+        className={`h-5 w-5 shrink-0 ${
+          activeLink === "Home"
+            ? "text-[#25f478]"
+            : "text-[#a1a1aa] group-hover/sidebar:text-white transition-colors"
+        }`}
+      />
+    ),
+  },
+  {
+    label: "Gateways",
+    href: "/gateways",
+    icon: (
+      <IconServer
+        className={`h-5 w-5 shrink-0 ${
+          activeLink === "Gateways"
+            ? "text-[#25f478]"
+            : "text-[#a1a1aa] group-hover/sidebar:text-white transition-colors"
+        }`}
+      />
+    ),
+  },
+  {
+    label: "API Keys",
+    href: "/api-keys",
+    icon: (
+      <IconKey
+        className={`h-5 w-5 shrink-0 ${
+          activeLink === "API Keys"
+            ? "text-[#25f478]"
+            : "text-[#a1a1aa] group-hover/sidebar:text-white transition-colors"
+        }`}
+      />
+    ),
+  },
+  {
+    label: "Webhooks",
+    href: "/webhooks",
+    icon: (
+      <IconWebhook
+        className={`h-5 w-5 shrink-0 ${
+          activeLink === "Webhooks"
+            ? "text-[#25f478]"
+            : "text-[#a1a1aa] group-hover/sidebar:text-white transition-colors"
+        }`}
+      />
+    ),
+  },
+  {
+    label: "Transactions",
+    href: "/transactions",
+    icon: (
+      <IconHistory
+        className={`h-5 w-5 shrink-0 ${
+          activeLink === "Transactions"
+            ? "text-[#25f478]"
+            : "text-[#a1a1aa] group-hover/sidebar:text-white transition-colors"
+        }`}
+      />
+    ),
+  },
+  {
+    label: "Settings",
+    href: "/settings",
+    icon: (
+      <IconSettings
+        className={`h-5 w-5 shrink-0 ${
+          activeLink === "Settings"
+            ? "text-[#25f478]"
+            : "text-[#a1a1aa] group-hover/sidebar:text-white transition-colors"
+        }`}
+      />
+    ),
+  },
+];
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [open, setOpenState] = useState(false);
@@ -78,15 +114,15 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   const setOpen: React.Dispatch<React.SetStateAction<boolean>> = (value) => {
     if (isDropdownOpen) {
-       // Prevent sidebar from closing if dropdown is open
-       if (value === false) return;
-       if (typeof value === 'function') {
-           setOpenState(prev => {
-              const result = value(prev);
-              return result === false ? true : result;
-           });
-           return;
-       }
+      // Prevent sidebar from closing if dropdown is open
+      if (value === false) return;
+      if (typeof value === "function") {
+        setOpenState((prev) => {
+          const result = value(prev);
+          return result === false ? true : result;
+        });
+        return;
+      }
     }
     setOpenState(value);
   };
@@ -96,18 +132,18 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   const getActiveLink = (pathname: string) => {
     switch (pathname) {
-      case '/dashboard':
-        return 'Home';
-      case '/gateways':
-        return 'Gateways';
-      case '/api-keys':
-        return 'API Keys';
-      case '/webhooks':
-        return 'Webhooks';
-      case '/transactions':
-        return 'Transactions';
-      case '/settings':
-        return 'Settings';
+      case "/dashboard":
+        return "Home";
+      case "/gateways":
+        return "Gateways";
+      case "/api-keys":
+        return "API Keys";
+      case "/webhooks":
+        return "Webhooks";
+      case "/transactions":
+        return "Transactions";
+      case "/settings":
+        return "Settings";
       default:
         return "Home";
     }
@@ -119,11 +155,16 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <div className="flex h-full">
       <Sidebar open={open} setOpen={setOpen}>
-        <SidebarBody className="justify-between gap-10">
+        <SidebarBody className="justify-between gap-10 bg-[#0f0f11] border-r border-[#27272a]">
           <div className="flex flex-col">
-            <div className="flex items-center gap-2 mt-2">
-              <div className="h-8 w-8 rounded-md flex items-center justify-center">
-                <Waypoints className="h-5 w-5 text-primary" />
+            <div className="flex items-center gap-2 mt-2 justify-center">
+              <div
+                className={cn(
+                  "w-8 h-8 bg-[#25f478]/10 flex items-center justify-center border border-[#25f478]/20 transition-all duration-200",
+                  open ? "rounded-lg" : "rounded-md"
+                )}
+              >
+                <Waypoints className="h-5 w-5 text-[#25f478]" />
               </div>
               <motion.span
                 animate={{
@@ -131,9 +172,9 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                   opacity: open ? 1 : 0,
                 }}
                 transition={{ duration: 0.2 }}
-                className="font-bold text-xl whitespace-pre"
+                className="font-bold text-xl whitespace-pre font-heading text-white"
               >
-                x402 Dev
+                x402 <span className="text-[#25f478]">Dev</span>
               </motion.span>
             </div>
             <div className="flex flex-1 flex-col overflow-x-hidden overflow-y-auto">
@@ -143,11 +184,15 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                     onClick={() => navigate(link.href)}
                     key={idx}
                     className={cn(
-                      "cursor-pointer",
+                      "cursor-pointer transition-all duration-200",
                       activeLink === link.label
-                        ? (open ? "bg-primary/10 rounded-lg px-3 py-2" : "bg-primary/10 rounded-lg px-3 py-0")
-                        : "px-3 py-2",
-                      !open ? "w-full flex justify-center" : ""
+                        ? open
+                          ? "bg-[#25f478]/10 border border-[#25f478]/20 rounded-lg px-3 py-2 text-[#25f478]"
+                          : "bg-[#25f478]/10 border border-[#25f478]/20 rounded-md w-9 h-9 p-0 flex items-center justify-center text-[#25f478]"
+                        : open
+                        ? "px-3 py-2 text-[#a1a1aa] hover:text-white hover:bg-white/5 rounded-lg"
+                        : "w-9 h-9 p-0 flex items-center justify-center text-[#a1a1aa] hover:text-white hover:bg-white/5 rounded-md",
+                      !open ? "mx-auto" : ""
                     )}
                   >
                     <SidebarLink link={link} />
@@ -156,36 +201,52 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               </div>
             </div>
           </div>
-          <div className="border-t mt-4 pt-4">
-             <DropdownMenu onOpenChange={setIsDropdownOpen}>
+          <div className="border-t border-[#27272a] mt-4 pt-4">
+            <DropdownMenu onOpenChange={setIsDropdownOpen}>
               <DropdownMenuTrigger asChild>
-                <div className="w-full cursor-pointer hover:bg-white/5 rounded-lg transition-colors">
+                <div className="w-full cursor-pointer hover:bg-[#27272a]/50 rounded-lg transition-colors p-1">
                   <SidebarLink
                     link={{
                       label: `${user?.name || "Anonymous"}\n${
                         user?.evmAddress
-                          ? `${user.evmAddress.slice(0, 6)}...${user.evmAddress.slice(
-                              -4
-                            )}`
+                          ? `${user.evmAddress.slice(
+                              0,
+                              6
+                            )}...${user.evmAddress.slice(-4)}`
                           : ""
                       }`,
                       href: "#",
                       icon: (
-                        <Avatar className="h-7 w-7 shrink-0">
+                        <Avatar className="h-8 w-8 shrink-0 border border-[#27272a]">
                           <AvatarImage src="/Logo.png" alt="Avatar" />
-                          <AvatarFallback>{(user?.name || user?.email || "A").charAt(0).toUpperCase()}</AvatarFallback>
+                          <AvatarFallback className="bg-[#18181b] text-[#a1a1aa] font-mono">
+                            {(user?.name || user?.email || "A")
+                              .charAt(0)
+                              .toUpperCase()}
+                          </AvatarFallback>
                         </Avatar>
                       ),
                     }}
                   />
                 </div>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56 bg-background-dark border-border-dark text-white" align="start" side="right" sideOffset={10}>
-                <DropdownMenuItem className="cursor-pointer" onClick={() => setIsProfileModalOpen(true)}>
+              <DropdownMenuContent
+                className="w-56 bg-[#0f0f11] border-[#27272a] text-white"
+                align="start"
+                side="right"
+                sideOffset={10}
+              >
+                <DropdownMenuItem
+                  className="cursor-pointer focus:bg-[#25f478]/10 focus:text-[#25f478] text-[#a1a1aa]"
+                  onClick={() => setIsProfileModalOpen(true)}
+                >
                   <User className="mr-2 h-4 w-4" />
                   <span>Update Profile</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="text-red-500 focus:text-red-500 focus:bg-red-500/10 cursor-pointer" onClick={logout}>
+                <DropdownMenuItem
+                  className="text-red-400 focus:text-red-400 focus:bg-red-500/10 cursor-pointer"
+                  onClick={logout}
+                >
                   <LogOut className="mr-2 h-4 w-4" />
                   <span>Log out</span>
                 </DropdownMenuItem>
@@ -200,11 +261,11 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       <motion.div
         className="flex-1 flex flex-col min-h-screen"
         animate={{
-          marginLeft: open ? "300px" : "60px",
+          marginLeft: open ? "220px" : "75px",
         }}
         transition={{ duration: 0.2 }}
       >
-        <Header />
+        <Header isSidebarOpen={open} onToggleSidebar={() => setOpen(!open)} />
         <main className="flex-1 flex flex-col p-8">{children}</main>
       </motion.div>
     </div>

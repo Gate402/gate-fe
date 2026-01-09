@@ -1,9 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import React, { useState, useEffect } from "react";
+import {
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { useAuth } from "@/context/AuthContext";
+import { useAuth, type User } from "@/context/AuthContext";
 import { authApi } from "@/lib/auth";
 import { Loader2 } from "lucide-react";
 
@@ -13,14 +19,14 @@ interface UpdateProfileModalProps {
 
 const UpdateProfileModal: React.FC<UpdateProfileModalProps> = ({ setOpen }) => {
   const { user, updateUser } = useAuth();
-  const [name, setName] = useState(user?.name || '');
-  const [email, setEmail] = useState(user?.email || '');
+  const [name, setName] = useState(user?.name || "");
+  const [email, setEmail] = useState(user?.email || "");
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (user) {
-        setName(user.name || '');
-        setEmail(user.email || '');
+      setName(user.name || "");
+      setEmail(user.email || "");
     }
   }, [user]);
 
@@ -34,7 +40,7 @@ const UpdateProfileModal: React.FC<UpdateProfileModalProps> = ({ setOpen }) => {
     setIsLoading(true);
     try {
       const response = await authApi.updateProfile({ name, email });
-      updateUser(response.user);
+      updateUser(response.user as User);
       toast.success("Profile updated successfully");
       setOpen(false);
     } catch (error: any) {
@@ -55,7 +61,10 @@ const UpdateProfileModal: React.FC<UpdateProfileModalProps> = ({ setOpen }) => {
       </DialogHeader>
       <form onSubmit={handleSubmit} className="grid gap-4 py-4">
         <div className="grid grid-cols-4 items-center gap-4">
-          <label htmlFor="name" className="text-right text-sm font-medium text-gray-300">
+          <label
+            htmlFor="name"
+            className="text-right text-sm font-medium text-gray-300"
+          >
             Name
           </label>
           <Input
@@ -66,7 +75,10 @@ const UpdateProfileModal: React.FC<UpdateProfileModalProps> = ({ setOpen }) => {
           />
         </div>
         <div className="grid grid-cols-4 items-center gap-4">
-          <label htmlFor="email" className="text-right text-sm font-medium text-gray-300">
+          <label
+            htmlFor="email"
+            className="text-right text-sm font-medium text-gray-300"
+          >
             Email
           </label>
           <Input
@@ -78,10 +90,12 @@ const UpdateProfileModal: React.FC<UpdateProfileModalProps> = ({ setOpen }) => {
           />
         </div>
         <DialogFooter>
-            <Button type="submit" disabled={isLoading}>
-            {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+          <Button type="submit" disabled={isLoading}>
+            {isLoading ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : null}
             Save changes
-            </Button>
+          </Button>
         </DialogFooter>
       </form>
     </DialogContent>

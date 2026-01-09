@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { ChevronRight, Plus } from "lucide-react";
+import { ChevronRight, Plus, PanelLeft } from "lucide-react";
 import {
   Status,
   StatusIndicator,
@@ -18,7 +18,12 @@ import {
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import CreateGatewayModal from "./CreateGatewayModal";
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  isSidebarOpen: boolean;
+  onToggleSidebar: () => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ isSidebarOpen, onToggleSidebar }) => {
   const location = useLocation();
   const pathnames = location.pathname.split("/").filter((x) => x);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
@@ -58,6 +63,15 @@ const Header: React.FC = () => {
       `}
     >
       <div className="flex items-center">
+        <button
+          onClick={onToggleSidebar}
+          className="mr-4 text-white hover:text-[#25f478] transition-colors focus:outline-none"
+        >
+          <PanelLeft
+            size={20}
+            className={isSidebarOpen ? "text-[#25f478]" : ""}
+          />
+        </button>
         {pathnames.length > 0 ? (
           <>
             <span className="text-gray-400">Dashboard</span>
