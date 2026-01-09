@@ -6,6 +6,7 @@ import {
   useReactTable,
   getSortedRowModel,
   getFilteredRowModel,
+  getPaginationRowModel,
   type SortingState,
 } from "@tanstack/react-table";
 import {
@@ -16,6 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 interface DataTableProps<TData, TValue> {
@@ -39,12 +41,18 @@ export function DashboardGatewayTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
     onGlobalFilterChange: setGlobalFilter,
     state: {
       sorting,
       globalFilter,
     },
+    initialState: {
+        pagination: {
+            pageSize: 5,
+        }
+    }
   });
 
   return (
@@ -92,6 +100,31 @@ export function DashboardGatewayTable<TData, TValue>({
           )}
         </TableBody>
       </Table>
+      <div className="flex items-center justify-between px-6 py-4 border-t border-border-dark">
+        <div className="text-sm text-text-dim">
+            Showing <span className="font-medium text-white">{table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1}-{table.getState().pagination.pageIndex * table.getState().pagination.pageSize + table.getRowModel().rows.length}</span> of <span className="font-medium text-white">{table.getCoreRowModel().rows.length}</span> gateways
+        </div>
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            className="text-text-dim border-border-dark"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            Previous
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            className="text-text-dim border-border-dark"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            Next
+          </Button>
+        </div>
+      </div>
     </div>
   );
 }
