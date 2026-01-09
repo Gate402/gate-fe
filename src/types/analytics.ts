@@ -50,3 +50,31 @@ export interface ConversionFunnelResponse {
     attemptRate: number;
   };
 }
+
+export interface UserOverviewResponse {
+  totalGateways: number;
+  totalRequests: number;
+  successfulPayments: number;
+  totalRevenue: string;
+  uniquePayers: number;
+  avgLatencyMs: number | null;
+  gatewayBreakdown: {
+    totalRevenue: string;
+    totalRequests: number;
+    subdomain: string;
+    gatewayId: string;
+  }[];
+}
+
+export interface UserRevenueTimelineResponse {
+  timestamp: string;
+  revenue: string;
+  paymentCount: number;
+}
+
+export interface UserRequestsTimelineResponse {
+  timestamp: string;
+  totalRequests: number;
+  paidRequests: number;
+  failedRequests: number;
+}

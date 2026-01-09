@@ -20,7 +20,7 @@ import AvgLatencyStatCard from '@/components/AvgLatencyStatCard';
 import { type Gateway } from '@/types/gateway';
 import { gatewaysApi } from '@/lib/gateways';
 import { analyticsApi } from '@/lib/analytics';
-import { type GatewayOverviewResponse } from '@/types/analytics';
+import { type UserOverviewResponse } from '@/types/analytics';
 import { toast } from 'sonner';
 import { 
   Dialog,  
@@ -35,7 +35,7 @@ import GatewayDetailsModal from '@/components/GatewayDetailsModal';
 
 const Gateways: React.FC = () => {
   const [data, setData] = useState<Gateway[]>([]);
-  const [overview, setOverview] = useState<GatewayOverviewResponse | null>(null);
+  const [overview, setOverview] = useState<UserOverviewResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isOverviewLoading, setIsOverviewLoading] = useState(true);
   const [selectedGatewayId, setSelectedGatewayId] = useState<string | null>(null);
@@ -59,7 +59,7 @@ const Gateways: React.FC = () => {
 
   const fetchOverview = async () => {
     try {
-      const response = await analyticsApi.getOverview("6a7065af-3025-430f-bd4c-9497ec332f4a", undefined, undefined);
+      const response = await analyticsApi.getUserOverview();
       setOverview(response);
     } catch (error) {
       console.error("Failed to fetch overview:", error);

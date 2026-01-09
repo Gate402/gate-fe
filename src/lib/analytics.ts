@@ -5,7 +5,10 @@ import {
   type RequestTimelineResponse,
   type RevenueTimelineResponse,
   type RouteAnalyticsResponse,
-  type ConversionFunnelResponse
+  type ConversionFunnelResponse,
+  type UserOverviewResponse,
+  type UserRevenueTimelineResponse,
+  type UserRequestsTimelineResponse
 } from '../types/analytics';
 
 export const analyticsApi = {
@@ -16,6 +19,13 @@ export const analyticsApi = {
         startDate: startDate, 
         endDate: endDate 
     }
+    });
+    return response.data;
+  },
+
+  getUserOverview: async (startDate?: string, endDate?: string): Promise<UserOverviewResponse> => {
+    const response = await api.get('/analytics/user/overview', {
+      params: { startDate, endDate }
     });
     return response.data;
   },
@@ -34,9 +44,23 @@ export const analyticsApi = {
     return response.data;
   },
 
+  getUserRequestsTimeline: async (interval?: 'hour' | 'day' | 'week' | 'month', startDate?: string, endDate?: string) : Promise<UserRequestsTimelineResponse[]> => {
+    const response = await api.get('/analytics/user/requests-timeline', {
+      params: { interval, startDate, endDate }
+    });
+    return response.data;
+  },
+
   getRevenueTimeline: async (gatewayId: string, interval?: 'hour' | 'day' | 'week' | 'month', startDate?: string, endDate?: string) : Promise<RevenueTimelineResponse[]> => {
     const response = await api.get('/analytics/revenue-timeline', {
       params: { gatewayId, interval, startDate, endDate }
+    });
+    return response.data;
+  },
+
+  getUserRevenueTimeline: async (interval?: 'hour' | 'day' | 'week' | 'month', startDate?: string, endDate?: string) : Promise<UserRevenueTimelineResponse[]> => {
+    const response = await api.get('/analytics/user/revenue-timeline', {
+      params: { interval, startDate, endDate }
     });
     return response.data;
   },
