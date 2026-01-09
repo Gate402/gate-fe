@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import TotalRevenueCard from '../components/TotalRevenueCard';
 import RevenueCard from '../components/RevenueCard';
 import SuccessfulPaymentsCard from '../components/SuccessfulPaymentsCard';
@@ -17,10 +17,14 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const thirtyDaysAgo = new Date();
+        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
         const [overviewData, timelineData] = await Promise.all([
-          analyticsApi.getUserOverview(undefined, undefined),
-          analyticsApi.getUserRevenueTimeline('day', undefined, undefined)
+          analyticsApi.getUserOverview(),
+          analyticsApi.getUserRevenueTimeline('day', thirtyDaysAgo.toISOString())
         ]);
+
         setOverview(overviewData);
         setRevenueTimeline(timelineData);
       } catch (error) {
@@ -33,13 +37,36 @@ const Dashboard: React.FC = () => {
     fetchData();
   }, []);
 
+  const revenue24h = useMemo(() => {
+    if (!revenueTimeline || revenueTimeline.length === 0) return 0;
+    return parseFloat(revenueTimeline[revenueTimeline.length - 1].revenue);
+  }, [revenueTimeline]);
+
+  const revenue7d = useMemo(() => {
+    if (!revenueTimeline || revenueTimeline.length === 0) return 0;
+    return revenueTimeline.slice(-7).reduce((acc, curr) => acc + parseFloat(curr.revenue), 0);
+  }, [revenueTimeline]);
+
+  const percentageChange = useMemo(() => {
+    if (!revenueTimeline || revenueTimeline.length < 14) return 0;
+    const current7d = revenueTimeline.slice(-7).reduce((acc, curr) => acc + parseFloat(curr.revenue), 0);
+    const prev7d = revenueTimeline.slice(-14, -7).reduce((acc, curr) => acc + parseFloat(curr.revenue), 0);
+    if (prev7d === 0) return current7d > 0 ? 100 : 0;
+    return ((current7d - prev7d) / prev7d) * 100;
+  }, [revenueTimeline]);
+
   return (
     <div className="p-6 md:p-10 max-w-[1400px] mx-auto w-full flex flex-col gap-8">
       {/* Hero Section: Metrics Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <TotalRevenueCard value={overview?.totalRevenue} chartData={revenueTimeline} isLoading={isLoading} />
         <div className="flex flex-col gap-6 lg:col-span-1">
-          <RevenueCard />
+          <RevenueCard 
+            revenue24h={revenue24h} 
+            revenue7d={revenue7d} 
+            percentageChange={percentageChange}
+            isLoading={isLoading} 
+          />
           <SuccessfulPaymentsCard value={overview?.successfulPayments} isLoading={isLoading} />
         </div>
         <RequestsCard value={overview?.totalRequests} isLoading={isLoading} />
