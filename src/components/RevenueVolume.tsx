@@ -76,6 +76,7 @@ const RevenueVolume: React.FC<RevenueVolumeProps> = ({ data = [], requestsData =
                   <Tooltip 
                     contentStyle={{ backgroundColor: '#1e1e1e', borderColor: '#333' }}
                     itemStyle={{ color: '#fff' }}
+                    labelStyle={{ color: '#fff' }}
                     formatter={(value: number) => [
                       chartType === 'revenue' 
                         ? `$${new Intl.NumberFormat('en-US', { minimumFractionDigits: 2 }).format(value)}`

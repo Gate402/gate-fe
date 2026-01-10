@@ -83,7 +83,7 @@ const TotalRevenueCard: React.FC<TotalRevenueCardProps> = ({ value, chartData = 
             />
             <ChartTooltip
               cursor={false}
-              content={<ChartTooltipContent hideLabel />}
+              content={<ChartTooltipContent labelClassName="text-white" />}
             />
             <Bar dataKey="revenue" fill="var(--primary)" radius={8} />
           </BarChart>
