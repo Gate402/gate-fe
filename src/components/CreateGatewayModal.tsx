@@ -287,7 +287,16 @@ const CreateGatewayModal: React.FC<{ setOpen: (open: boolean) => void }> = ({
                       value={chain.id}
                       className="focus:bg-[#25f478]/10 focus:text-[#25f478] cursor-pointer"
                     >
-                      {chain.name}
+                      <div className="flex items-center gap-2">
+                        {chain.imageUrl && (
+                          <img
+                            src={chain.imageUrl}
+                            alt={chain.name}
+                            className="w-5 h-5 rounded-full object-cover"
+                          />
+                        )}
+                        <span>{chain.name}</span>
+                      </div>
                     </SelectItem>
                   ))}
                 </SelectContent>
