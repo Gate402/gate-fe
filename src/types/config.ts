@@ -4,6 +4,7 @@ export interface ChainResponse {
   nativeCurrency: string;
   rpcUrl: string | null;
   blockExplorer: string | null;
+  imageUrl: string;
   createdAt: string;
   updatedAt: string;
 }
