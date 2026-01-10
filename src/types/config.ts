@@ -16,6 +16,7 @@ export interface TokenResponse {
   decimals: number;
   name: string | null;
   version: string | null;
+  imageUrl: string;
   createdAt: string;
   updatedAt: string;
 }

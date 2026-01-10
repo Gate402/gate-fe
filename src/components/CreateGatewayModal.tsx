@@ -320,7 +320,16 @@ const CreateGatewayModal: React.FC<{ setOpen: (open: boolean) => void }> = ({
                       value={token.id}
                       className="focus:bg-[#25f478]/10 focus:text-[#25f478] cursor-pointer"
                     >
-                      {token.symbol}
+                      <div className="flex items-center gap-2">
+                        {token.imageUrl && (
+                          <img
+                            src={token.imageUrl}
+                            alt={token.symbol}
+                            className="w-5 h-5 rounded-full object-cover"
+                          />
+                        )}
+                        <span>{token.symbol}</span>
+                      </div>
                     </SelectItem>
                   ))}
                   {availableTokens.length === 0 && (
