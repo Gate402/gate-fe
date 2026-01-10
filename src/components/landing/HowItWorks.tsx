@@ -95,7 +95,7 @@ const Step2Visualization = () => (
       <div className="p-3 rounded border border-[#25f478]/30 bg-[#25f478]/5">
         <p className="text-[10px] text-[#25f478] mb-1 font-mono">GATEWAY URL</p>
         <code className="font-mono text-sm text-white">
-          https://yourapp.gate402.io
+          https://yourapp.gate402.pro
         </code>
       </div>
       <div className="flex gap-2 text-[10px] font-mono text-[#a1a1aa]">

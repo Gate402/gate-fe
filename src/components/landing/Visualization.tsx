@@ -29,37 +29,43 @@ interface APICard {
 }
 
 const firstRowCards: APICard[] = [
-  { domain: "image-gen.gate402.io", icon: <IconPhoto className="h-8 w-8" /> },
+  { domain: "image-gen.gate402.pro", icon: <IconPhoto className="h-8 w-8" /> },
   {
-    domain: "code-analyzer.gate402.io",
+    domain: "code-analyzer.gate402.pro",
     icon: <IconCode className="h-8 w-8" />,
   },
-  { domain: "llm-gateway.gate402.io", icon: <IconBrain className="h-8 w-8" /> },
   {
-    domain: "translation.gate402.io",
+    domain: "llm-gateway.gate402.pro",
+    icon: <IconBrain className="h-8 w-8" />,
+  },
+  {
+    domain: "translation.gate402.pro",
     icon: <IconLanguage className="h-8 w-8" />,
   },
   {
-    domain: "file-converter.gate402.io",
+    domain: "file-converter.gate402.pro",
     icon: <IconFileText className="h-8 w-8" />,
   },
 ];
 
 const secondRowCards: APICard[] = [
-  { domain: "search-api.gate402.io", icon: <IconSearch className="h-8 w-8" /> },
   {
-    domain: "[your-company].gate402.io",
+    domain: "search-api.gate402.pro",
+    icon: <IconSearch className="h-8 w-8" />,
+  },
+  {
+    domain: "[your-company].gate402.pro",
     icon: <IconBuildingStore className="h-8 w-8" />,
   },
   {
-    domain: "data-enrichment.gate402.io",
+    domain: "data-enrichment.gate402.pro",
     icon: <IconDatabase className="h-8 w-8" />,
   },
   {
-    domain: "analytics.gate402.io",
+    domain: "analytics.gate402.pro",
     icon: <IconChartBar className="h-8 w-8" />,
   },
-  { domain: "custom-api.gate402.io", icon: <IconApi className="h-8 w-8" /> },
+  { domain: "custom-api.gate402.pro", icon: <IconApi className="h-8 w-8" /> },
 ];
 
 const Card = ({ domain, icon, index }: APICard & { index: number }) => {

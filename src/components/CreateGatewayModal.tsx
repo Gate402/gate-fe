@@ -192,7 +192,7 @@ const CreateGatewayModal: React.FC<{ setOpen: (open: boolean) => void }> = ({
             className="rounded-lg border bg-[#18181b]/50 overflow-hidden transition-colors duration-300"
           >
             <InputGroup className="border-none shadow-none">
-              <InputGroupAddon className="bg-transparent border-r border-[#27272a] text-[#a1a1aa]">
+              <InputGroupAddon className="bg-transparent border-r w-10 px-1 border-[#27272a] text-[#a1a1aa]">
                 <Globe
                   size={16}
                   className={cn(
@@ -238,7 +238,7 @@ const CreateGatewayModal: React.FC<{ setOpen: (open: boolean) => void }> = ({
               className="rounded-lg border bg-[#18181b]/50 overflow-hidden"
             >
               <InputGroup className="border-none shadow-none">
-                <InputGroupAddon className="bg-transparent border-r border-[#27272a] text-[#a1a1aa]">
+                <InputGroupAddon className="bg-transparent border-r pl-0 px-1 w-10 border-[#27272a] text-[#a1a1aa]">
                   <span
                     className={cn(
                       "font-mono",
@@ -347,7 +347,7 @@ const CreateGatewayModal: React.FC<{ setOpen: (open: boolean) => void }> = ({
               className="rounded-lg border bg-[#18181b]/50 overflow-hidden"
             >
               <InputGroup className="border-none shadow-none">
-                <InputGroupAddon className="bg-transparent border-r border-[#27272a] text-[#a1a1aa]">
+                <InputGroupAddon className="bg-transparent border-r w-10 px-1 pl-0 border-[#27272a] text-[#a1a1aa]">
                   <Lock
                     size={14}
                     className={cn(

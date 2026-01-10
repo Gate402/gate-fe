@@ -9,6 +9,7 @@ import {
   HoveredLink,
 } from "@/components/ui/navbar-menu";
 import { cn } from "@/lib/utils";
+import { DOCS_URL } from "@/lib/constants";
 
 export const Navbar = () => {
   const [active, setActive] = useState<string | null>(null);
@@ -186,7 +187,7 @@ export const Navbar = () => {
               variant="ghost"
               size="sm"
               className="text-text-dim hover:text-white hover:bg-white/5"
-              onClick={() => window.open("/docs", "_blank")}
+              onClick={() => window.open(DOCS_URL, "_blank")}
             >
               Read Docs
             </Button>
@@ -218,7 +219,7 @@ export const Navbar = () => {
                 variant="ghost"
                 className="justify-start"
                 onClick={() => {
-                  window.open("/docs", "_blank");
+                  window.open(DOCS_URL, "_blank");
                   setIsMobileMenuOpen(false);
                 }}
               >

@@ -69,7 +69,7 @@ const faqData: FAQItem[] = [
   {
     question: "What if I have more questions?",
     answer:
-      "Join our Discord community or email us at hello@gate402.io. We're small and scrappy—you'll probably talk directly to the founders.",
+      "Join our Discord community or email us at hello@gate402.pro. We're small and scrappy—you'll probably talk directly to the founders.",
   },
 ];
 
