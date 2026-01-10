@@ -17,6 +17,7 @@ import {
 
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import CreateGatewayModal from "./CreateGatewayModal";
+import { useFilter } from "@/context/FilterContext";
 
 interface HeaderProps {
   isSidebarOpen: boolean;
@@ -28,6 +29,7 @@ const Header: React.FC<HeaderProps> = ({ isSidebarOpen, onToggleSidebar }) => {
   const pathnames = location.pathname.split("/").filter((x) => x);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [isAtTop, setIsAtTop] = useState(true);
+  const { duration, setDuration } = useFilter();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -106,7 +108,7 @@ const Header: React.FC<HeaderProps> = ({ isSidebarOpen, onToggleSidebar }) => {
       </div>
       <div className="flex items-center">
         <div className="mr-4">
-          <Select defaultValue="30d">
+          <Select value={duration} onValueChange={(val: any) => setDuration(val)}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Select duration" />
             </SelectTrigger>
@@ -134,3 +136,5 @@ const Header: React.FC<HeaderProps> = ({ isSidebarOpen, onToggleSidebar }) => {
 };
 
 export default Header;
+
+

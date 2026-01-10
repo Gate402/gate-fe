@@ -7,26 +7,39 @@ interface RevenueVolumeProps {
   data?: UserRevenueTimelineResponse[];
   requestsData?: UserRequestsTimelineResponse[];
   isLoading?: boolean;
+  duration?: string;
 }
 
-const RevenueVolume: React.FC<RevenueVolumeProps> = ({ data = [], requestsData = [], isLoading }) => {
+const RevenueVolume: React.FC<RevenueVolumeProps> = ({ data = [], requestsData = [], isLoading, duration = '30d' }) => {
   const [chartType, setChartType] = useState<'revenue' | 'requests'>('revenue');
 
   const processedData = useMemo(() => {
+    const formatDate = (dateStr: string) => {
+      const date = new Date(dateStr);
+      if (duration === '1d') {
+        return date.toLocaleTimeString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+      } else if (duration === '7d' || duration === '30d') {
+        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      } else if (duration === '6m' || duration === '1y') {
+        return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+      }
+      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    };
+
     if (chartType === 'revenue') {
       if (!data || data.length === 0) return [];
       return data.map(item => ({
-        name: new Date(item.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+        name: formatDate(item.timestamp),
         volume: parseFloat(item.revenue)
       }));
     } else {
       if (!requestsData || requestsData.length === 0) return [];
       return requestsData.map(item => ({
-        name: new Date(item.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+        name: formatDate(item.timestamp),
         volume: item.totalRequests
       }));
     }
-  }, [data, requestsData, chartType]);
+  }, [data, requestsData, chartType, duration]);
 
   const color = "#25f478"; 
 

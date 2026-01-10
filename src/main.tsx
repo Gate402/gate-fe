@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "@rainbow-me/rainbowkit/styles.css";
 import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { AuthProvider } from "./context/AuthContext";
+import { FilterProvider } from "./context/FilterContext";
 import { HelmetProvider } from "react-helmet-async";
 
 const queryClient = new QueryClient();
@@ -19,7 +20,9 @@ createRoot(document.getElementById("root")!).render(
         <QueryClientProvider client={queryClient}>
           <RainbowKitProvider>
             <AuthProvider>
-              <App />
+              <FilterProvider>
+                <App />
+              </FilterProvider>
             </AuthProvider>
           </RainbowKitProvider>
         </QueryClientProvider>
