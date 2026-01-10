@@ -102,7 +102,7 @@ const Header: React.FC<HeaderProps> = ({ isSidebarOpen, onToggleSidebar }) => {
             variant="outline"
           >
             <StatusIndicator />
-            <StatusLabel className="text-primary">LIVE ON LISK & MANTLE & SEPOLIA</StatusLabel>
+            <StatusLabel className="text-primary">LIVE ON LISK</StatusLabel>
           </Status>
         </div>
       </div>
