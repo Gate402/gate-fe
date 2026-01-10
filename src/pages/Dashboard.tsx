@@ -7,26 +7,29 @@ import RevenueVolume from '../components/RevenueVolume';
 import LatestTransactions from '../components/LatestTransactions';
 import ActiveGateways from '../components/ActiveGateways';
 import { analyticsApi } from '@/lib/analytics';
-import { type UserOverviewResponse, type UserRevenueTimelineResponse } from '@/types/analytics';
+import { type UserOverviewResponse, type UserRevenueTimelineResponse, type UserRequestsTimelineResponse } from '@/types/analytics';
 
 const Dashboard: React.FC = () => {
   const [overview, setOverview] = useState<UserOverviewResponse | null>(null);
   const [revenueTimeline, setRevenueTimeline] = useState<UserRevenueTimelineResponse[]>([]);
+  const [requestsTimeline, setRequestsTimeline] = useState<UserRequestsTimelineResponse[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const thirtyDaysAgo = new Date();
-        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+        const sixtyDaysAgo = new Date();
+        sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
 
-        const [overviewData, timelineData] = await Promise.all([
+        const [overviewData, revenueData, requestsData] = await Promise.all([
           analyticsApi.getUserOverview(),
-          analyticsApi.getUserRevenueTimeline('day', thirtyDaysAgo.toISOString())
+          analyticsApi.getUserRevenueTimeline('day', sixtyDaysAgo.toISOString()),
+          analyticsApi.getUserRequestsTimeline('day', sixtyDaysAgo.toISOString())
         ]);
 
         setOverview(overviewData);
-        setRevenueTimeline(timelineData);
+        setRevenueTimeline(revenueData);
+        setRequestsTimeline(requestsData);
       } catch (error) {
         console.error("Failed to fetch dashboard data:", error);
       } finally {
@@ -55,11 +58,41 @@ const Dashboard: React.FC = () => {
     return ((current7d - prev7d) / prev7d) * 100;
   }, [revenueTimeline]);
 
+  const totalRevenueGrowth = useMemo(() => {
+    if (!revenueTimeline || revenueTimeline.length < 60) {
+      // If we don't have 60 days, we can't do full PoP, 
+      // but maybe we have enough for some comparison
+      if (revenueTimeline.length < 2) return 0;
+      const mid = Math.floor(revenueTimeline.length / 2);
+      const currentPeriod = revenueTimeline.slice(-mid).reduce((acc, curr) => acc + parseFloat(curr.revenue), 0);
+      const prevPeriod = revenueTimeline.slice(-2 * mid, -mid).reduce((acc, curr) => acc + parseFloat(curr.revenue), 0);
+      if (prevPeriod === 0) return currentPeriod > 0 ? 100 : 0;
+      return ((currentPeriod - prevPeriod) / prevPeriod) * 100;
+    }
+    const current30d = revenueTimeline.slice(-30).reduce((acc, curr) => acc + parseFloat(curr.revenue), 0);
+    const prev30d = revenueTimeline.slice(-60, -30).reduce((acc, curr) => acc + parseFloat(curr.revenue), 0);
+    if (prev30d === 0) return current30d > 0 ? 100 : 0;
+    return ((current30d - prev30d) / prev30d) * 100;
+  }, [revenueTimeline]);
+
+  const last30DaysTimeline = useMemo(() => {
+    return revenueTimeline.slice(-30);
+  }, [revenueTimeline]);
+
+  const last30DaysRequests = useMemo(() => {
+    return requestsTimeline.slice(-30);
+  }, [requestsTimeline]);
+
   return (
     <div className="p-6 md:p-10 max-w-[1400px] mx-auto w-full flex flex-col gap-8">
       {/* Hero Section: Metrics Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <TotalRevenueCard value={overview?.totalRevenue} chartData={revenueTimeline} isLoading={isLoading} />
+        <TotalRevenueCard 
+          value={overview?.totalRevenue} 
+          chartData={last30DaysTimeline} 
+          isLoading={isLoading} 
+          growthRate={totalRevenueGrowth}
+        />
         <div className="flex flex-col gap-6 lg:col-span-1">
           <RevenueCard 
             revenue24h={revenue24h} 
@@ -68,13 +101,17 @@ const Dashboard: React.FC = () => {
             isLoading={isLoading} 
           />
           <SuccessfulPaymentsCard value={overview?.successfulPayments} isLoading={isLoading} />
+          <RequestsCard value={overview?.totalRequests} isLoading={isLoading} />
         </div>
-        <RequestsCard value={overview?.totalRequests} isLoading={isLoading} />
+        <LatestTransactions />
       </div>
       {/* Visualization Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <RevenueVolume data={revenueTimeline} isLoading={isLoading} />
-        <LatestTransactions />
+      <div className="w-full">
+        <RevenueVolume 
+          data={last30DaysTimeline} 
+          requestsData={last30DaysRequests} 
+          isLoading={isLoading} 
+        />
       </div>
       {/* Gateways Table Section */}
       <ActiveGateways />

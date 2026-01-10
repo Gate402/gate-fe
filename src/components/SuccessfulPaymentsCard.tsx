@@ -1,5 +1,5 @@
 import React from 'react';
-import { TrendingUp, CheckCircle } from 'lucide-react';
+import { CheckCircle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface SuccessfulPaymentsCardProps {
@@ -22,10 +22,6 @@ const SuccessfulPaymentsCard: React.FC<SuccessfulPaymentsCardProps> = ({ value, 
              {value ? new Intl.NumberFormat("en-US").format(value) : "0"}
           </CardTitle>
         )}
-        <p className="text-primary text-xs font-medium mt-2 flex items-center gap-1">
-          <TrendingUp size={14} />
-          +8.4% <span className="text-gray-600 ml-1 font-normal">growth</span>
-        </p>
       </CardContent>
     </Card>
   );
