@@ -206,7 +206,11 @@ const Gateways: React.FC = () => {
           }
         },
         {
-          accessorKey: "conversion",
+          id: "conversion",
+          accessorFn: (row) => {
+            if (row.totalRequests === 0) return 0;
+            return (row.successfulPayments / row.totalRequests) * 100;
+          },
           header: ({ column }) => {
               return (
                   <div className="text-right">
@@ -221,11 +225,11 @@ const Gateways: React.FC = () => {
               )
           },
           cell: ({ row }) => {
+              const conversionRate = row.getValue("conversion") as number;
               const gateway = row.original;
-              const conversionRate = gateway.totalRequests === 0 ? 0 : (gateway.successfulPayments / gateway.totalRequests * 100).toFixed(2);
               return (
                   <div className="text-right">
-                      <div className="font-medium text-primary">{conversionRate}%</div>
+                      <div className="font-medium text-primary">{conversionRate.toFixed(2)}%</div>
                       <div className="text-xs text-text-dim font-mono">{gateway.successfulPayments} / {gateway.totalRequests}</div>
                   </div>
               )

@@ -202,7 +202,7 @@ const GatewayDetailsModal: React.FC<GatewayDetailsModalProps> = ({
   const clientSnippet = getClientSnippet(gatewayUrl);
 
   return (
-    <DialogContent className="bg-[#0f0f11]/95 backdrop-blur-xl border-border-dark text-white max-h-[90vh] overflow-y-auto sm:max-w-[600px] shadow-[0_0_50px_-20px_rgba(0,0,0,0.5)] p-0 gap-0">
+    <DialogContent className="bg-[#0f0f11]/95 backdrop-blur-xl border-border-dark text-white max-h-[90vh] overflow-y-auto sm:max-w-[800px] shadow-[0_0_50px_-20px_rgba(0,0,0,0.5)] p-0 gap-0">
       <DialogHeader className="p-6 border-b border-border-dark bg-[#0f0f11]">
         <DialogTitle className="text-2xl font-bold font-heading text-white tracking-tight flex items-center gap-2">
           Gateway Settings

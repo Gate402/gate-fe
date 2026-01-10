@@ -74,7 +74,6 @@ const Header: React.FC<HeaderProps> = ({ isSidebarOpen, onToggleSidebar }) => {
         </button>
         {pathnames.length > 0 ? (
           <>
-            <span className="text-gray-400">Dashboard</span>
             {pathnames.map((value, index) => {
               const last = index === pathnames.length - 1;
               const to = `/${pathnames.slice(0, index + 1).join("/")}`;
@@ -101,7 +100,7 @@ const Header: React.FC<HeaderProps> = ({ isSidebarOpen, onToggleSidebar }) => {
             variant="outline"
           >
             <StatusIndicator />
-            <StatusLabel className="text-primary">LIVE MAINNET</StatusLabel>
+            <StatusLabel className="text-primary">LIVE ON LISK & MANTLE & SEPOLIA</StatusLabel>
           </Status>
         </div>
       </div>

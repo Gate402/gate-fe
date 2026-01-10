@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { TrendingUp } from 'lucide-react';
+import { TrendingUp, TrendingDown } from 'lucide-react';
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import {
@@ -23,9 +23,10 @@ interface TotalRevenueCardProps {
   value?: string;
   chartData?: UserRevenueTimelineResponse[];
   isLoading?: boolean;
+  growthRate?: number;
 }
 
-const TotalRevenueCard: React.FC<TotalRevenueCardProps> = ({ value, chartData = [], isLoading }) => {
+const TotalRevenueCard: React.FC<TotalRevenueCardProps> = ({ value, chartData = [], isLoading, growthRate }) => {
   const processedData = useMemo(() => {
     if (!chartData || chartData.length === 0) return [];
     
@@ -34,6 +35,8 @@ const TotalRevenueCard: React.FC<TotalRevenueCardProps> = ({ value, chartData = 
       revenue: parseFloat(item.revenue)
     }));
   }, [chartData]);
+
+  const isPositiveGrowth = (growthRate ?? 0) >= 0;
 
   return (
     <Card className="col-span-1 md:col-span-2 lg:col-span-2 relative overflow-hidden rounded-xl bg-card-dark border border-border-dark group">
@@ -54,10 +57,18 @@ const TotalRevenueCard: React.FC<TotalRevenueCardProps> = ({ value, chartData = 
               <span className="text-gray-500 text-lg font-normal">USD</span>
             </div>
           </div>
-          <div className="bg-primary/10 px-2.5 py-1 rounded-full flex items-center gap-1 border border-primary/20">
-            <TrendingUp className="text-primary" size={16} />
-            <span className="text-primary text-xs font-bold">+12.5%</span>
-          </div>
+          {typeof growthRate === 'number' && (
+            <div className={`px-2.5 py-1 rounded-full flex items-center gap-1 border ${
+              isPositiveGrowth 
+                ? 'bg-primary/10 border-primary/20 text-primary' 
+                : 'bg-red-500/10 border-red-500/20 text-red-500'
+            }`}>
+              {isPositiveGrowth ? <TrendingUp size={16} /> : <TrendingDown size={16} />}
+              <span className="text-xs font-bold">
+                {isPositiveGrowth ? '+' : ''}{growthRate.toFixed(1)}%
+              </span>
+            </div>
+          )}
         </div>
       </CardHeader>
       <CardContent className="p-6 flex flex-col h-full justify-between relative z-0">
