@@ -155,7 +155,11 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <div className="flex h-full">
       <Sidebar open={open} setOpen={setOpen}>
-        <SidebarBody className="justify-between gap-10 bg-[#0f0f11] border-r border-[#27272a]">
+        <SidebarBody 
+          className="justify-between gap-10 bg-[#0f0f11] border-r border-[#27272a]"
+          onMouseEnter={() => setOpen(true)}
+          onMouseLeave={() => setOpen(false)}
+        >
           <div className="flex flex-col">
             <div className="flex items-center gap-2 mt-2 justify-center">
               <div
