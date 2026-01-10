@@ -21,7 +21,6 @@ import {
   Wallet,
   Settings,
   Code2,
-  Lock,
 } from "lucide-react";
 import { toast } from "sonner";
 import { gatewaysApi } from "@/lib/gateways";
@@ -257,7 +256,7 @@ const GatewayDetailsModal: React.FC<GatewayDetailsModalProps> = ({
             </button>
           </div>
 
-          <div className="p-6 space-y-6 bg-gradient-to-b from-[#0f0f11] to-[#0a0a0c]">
+          <div className="p-6 space-y-6 bg-linear-to-b from-[#0f0f11] to-[#0a0a0c]">
             <AnimatePresence mode="wait">
               {activeTab === "config" && (
                 <motion.div

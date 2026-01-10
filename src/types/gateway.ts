@@ -4,9 +4,7 @@ export type Gateway = {
   originUrl: string;
   defaultPricePerRequest: number;
   defaultToken: string;
-  acceptedNetworks: [
-    string
-  ],
+  acceptedNetworks: [string];
   secretToken: string;
   status: string;
   customDomain: string;
@@ -18,5 +16,6 @@ export type Gateway = {
   updatedAt: string;
   totalRequests: number;
   successfulPayments: number;
-  totalRevenue: number
+  totalRevenue: number;
+  gatewayUrl?: string;
 };
