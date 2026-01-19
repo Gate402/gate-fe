@@ -9,7 +9,7 @@ export const sandboxConfig = createConfig({
   connectors: [
     injected(),
     walletConnect({
-      projectId: process.env.VITE_RAINBOW_PROJECT_ID!, // Same project ID can be used
+      projectId: import.meta.env.VITE_RAINBOW_PROJECT_ID!, // Same project ID can be used
     }),
   ],
   ssr: false,
