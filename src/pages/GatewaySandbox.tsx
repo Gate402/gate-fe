@@ -1,13 +1,12 @@
 import { useState, useCallback, useRef, useEffect } from "react";
-import {
-  WagmiProvider,
-  useAccount,
-  useConnect,
-  useDisconnect,
-  useWalletClient,
-} from "wagmi";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { sandboxConfig } from "@/config/sandboxWagmi";
+import {} from // WagmiProvider,
+// useAccount,
+// useConnect,
+// useDisconnect,
+// useWalletClient,
+"wagmi";
+// import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+// import { sandboxConfig } from "@/config/sandboxWagmi";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import axios, { AxiosError } from "axios";
@@ -25,7 +24,7 @@ import {
   AlertTriangle,
   Eye,
   EyeOff,
-  X,
+  // X,
   Loader2,
   CheckCircle2,
   Clock,
@@ -39,12 +38,12 @@ import {
 } from "@x402/core/http";
 import { ExactEvmScheme } from "@x402/evm/exact/client";
 import type { PaymentRequirements } from "@x402/core/types";
-import type { WalletClient } from "viem";
+// import type { WalletClient } from "viem";
 
 const GATEWAY_DOMAIN = import.meta.env.VITE_GATEWAY_DOMAIN || "gate402.pro";
 
 // Create a separate QueryClient for the sandbox
-const sandboxQueryClient = new QueryClient();
+// const sandboxQueryClient = new QueryClient();
 
 type LogLevel = "info" | "success" | "error" | "warning" | "step" | "data";
 
@@ -165,65 +164,65 @@ function TerminalLog({
   );
 }
 
-// Wallet Connect Button for Sandbox
-function SandboxWalletConnect({
-  onConnected,
-}: {
-  onConnected: (address: string) => void;
-}) {
-  const { address, isConnected } = useAccount();
-  const { connect, connectors, isPending } = useConnect();
-  const { disconnect } = useDisconnect();
+// // Wallet Connect Button for Sandbox
+// function SandboxWalletConnect({
+//   onConnected,
+// }: {
+//   onConnected: (address: string) => void;
+// }) {
+//   const { address, isConnected } = useAccount();
+//   const { connect, connectors, isPending } = useConnect();
+//   const { disconnect } = useDisconnect();
 
-  useEffect(() => {
-    if (isConnected && address) {
-      onConnected(address);
-    }
-  }, [isConnected, address, onConnected]);
+//   useEffect(() => {
+//     if (isConnected && address) {
+//       onConnected(address);
+//     }
+//   }, [isConnected, address, onConnected]);
 
-  if (isConnected && address) {
-    return (
-      <div className="flex items-center gap-3">
-        <div className="flex items-center gap-2 px-3 py-2 bg-primary/10 border border-primary/30 rounded-lg">
-          <CheckCircle2 className="w-4 h-4 text-primary" />
-          <span className="font-mono text-sm text-white">
-            {address.slice(0, 6)}...{address.slice(-4)}
-          </span>
-        </div>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => disconnect()}
-          className="text-zinc-400 hover:text-white"
-        >
-          <X className="w-4 h-4" />
-        </Button>
-      </div>
-    );
-  }
+//   if (isConnected && address) {
+//     return (
+//       <div className="flex items-center gap-3">
+//         <div className="flex items-center gap-2 px-3 py-2 bg-primary/10 border border-primary/30 rounded-lg">
+//           <CheckCircle2 className="w-4 h-4 text-primary" />
+//           <span className="font-mono text-sm text-white">
+//             {address.slice(0, 6)}...{address.slice(-4)}
+//           </span>
+//         </div>
+//         <Button
+//           variant="ghost"
+//           size="sm"
+//           onClick={() => disconnect()}
+//           className="text-zinc-400 hover:text-white"
+//         >
+//           <X className="w-4 h-4" />
+//         </Button>
+//       </div>
+//     );
+//   }
 
-  return (
-    <div className="flex flex-wrap gap-2">
-      {connectors.map((connector) => (
-        <Button
-          key={connector.uid}
-          variant="outline"
-          size="sm"
-          onClick={() => connect({ connector })}
-          disabled={isPending}
-          className="text-zinc-300 border-border-dark hover:border-primary hover:text-white"
-        >
-          {isPending ? (
-            <Loader2 className="w-4 h-4 animate-spin mr-2" />
-          ) : (
-            <Wallet className="w-4 h-4 mr-2" />
-          )}
-          {connector.name}
-        </Button>
-      ))}
-    </div>
-  );
-}
+//   return (
+//     <div className="flex flex-wrap gap-2">
+//       {connectors.map((connector) => (
+//         <Button
+//           key={connector.uid}
+//           variant="outline"
+//           size="sm"
+//           onClick={() => connect({ connector })}
+//           disabled={isPending}
+//           className="text-zinc-300 border-border-dark hover:border-primary hover:text-white"
+//         >
+//           {isPending ? (
+//             <Loader2 className="w-4 h-4 animate-spin mr-2" />
+//           ) : (
+//             <Wallet className="w-4 h-4 mr-2" />
+//           )}
+//           {connector.name}
+//         </Button>
+//       ))}
+//     </div>
+//   );
+// }
 
 // Main Sandbox Content Component
 function SandboxContent() {
@@ -235,10 +234,10 @@ function SandboxContent() {
   const [gatewayUrl, setGatewayUrl] = useState("");
   const [logs, setLogs] = useState<LogEntry[]>([]);
   const [isRunning, setIsRunning] = useState(false);
-  const [connectedAddress, setConnectedAddress] = useState<string | null>(null);
+  // const [connectedAddress, setConnectedAddress] = useState<string | null>(null);
   const logIdRef = useRef(0);
 
-  const { data: walletClient } = useWalletClient();
+  // const { data: walletClient } = useWalletClient();
 
   const addLog = useCallback(
     (level: LogLevel, message: string, data?: string) => {
@@ -329,32 +328,32 @@ function SandboxContent() {
       }
 
       // Prepare signer
-      let signer: PrivateKeyAccount | WalletClient;
+      // let signer: PrivateKeyAccount | WalletClient;
 
-      if (signingMode === "privateKey") {
-        const keyValidation = validatePrivateKey(privateKey);
-        if (!keyValidation.valid) {
-          addLog("error", keyValidation.error!);
-          setIsRunning(false);
-          return;
-        }
-        const normalized = privateKey.startsWith("0x")
-          ? (privateKey as `0x${string}`)
-          : (`0x${privateKey}` as `0x${string}`);
-        signer = privateKeyToAccount(normalized);
-        addLog("success", `Using private key signer: ${signer.address}`);
-      } else {
-        if (!walletClient) {
-          addLog(
-            "error",
-            "Wallet not connected. Please connect your wallet first.",
-          );
-          setIsRunning(false);
-          return;
-        }
-        signer = walletClient;
-        addLog("success", `Using connected wallet: ${connectedAddress}`);
+      // if (signingMode === "privateKey") {
+      const keyValidation = validatePrivateKey(privateKey);
+      if (!keyValidation.valid) {
+        addLog("error", keyValidation.error!);
+        setIsRunning(false);
+        return;
       }
+      const normalized = privateKey.startsWith("0x")
+        ? (privateKey as `0x${string}`)
+        : (`0x${privateKey}` as `0x${string}`);
+      const signer = privateKeyToAccount(normalized);
+      addLog("success", `Using private key signer: ${signer.address}`);
+      // } else {
+      // if (!walletClient) {
+      //   addLog(
+      //     "error",
+      //     "Wallet not connected. Please connect your wallet first.",
+      //   );
+      //   setIsRunning(false);
+      //   return;
+      // }
+      // signer = walletClient;
+      // addLog("success", `Using connected wallet: ${connectedAddress}`);
+      // }
 
       // Create x402 client with EVM scheme
       addLog("info", "Creating x402 client with EVM scheme...");
@@ -626,10 +625,10 @@ function SandboxContent() {
     }
   }, [
     gatewayUrl,
-    signingMode,
+    // signingMode,
     privateKey,
-    walletClient,
-    connectedAddress,
+    // walletClient,
+    // connectedAddress,
     addLog,
     clearLogs,
     validateGatewayUrl,
@@ -639,15 +638,16 @@ function SandboxContent() {
 
   const isFormValid = useCallback(() => {
     const urlValid = validateGatewayUrl(gatewayUrl).valid;
-    if (signingMode === "privateKey") {
-      return urlValid && validatePrivateKey(privateKey).valid;
-    }
-    return urlValid && !!walletClient;
+    // if (signingMode === "privateKey") {
+    return urlValid && validatePrivateKey(privateKey).valid;
+    // }
+    // return urlValid && !!walletClient;
+    // return urlValid && !!privateKey;
   }, [
     gatewayUrl,
-    signingMode,
+    // signingMode,
     privateKey,
-    walletClient,
+    // walletClient,
     validateGatewayUrl,
     validatePrivateKey,
   ]);
@@ -719,7 +719,7 @@ function SandboxContent() {
                   <label className="block text-sm font-medium text-zinc-400 mb-2">
                     Sandbox Wallet
                   </label>
-                  <SandboxWalletConnect onConnected={setConnectedAddress} />
+                  {/* <SandboxWalletConnect onConnected={setConnectedAddress} /> */}
                   <p className="text-xs text-zinc-500 mt-2">
                     This wallet connection is isolated from the main app
                   </p>
@@ -880,10 +880,10 @@ function SandboxContent() {
 // Wrapper component with separate providers
 export default function GatewaySandbox() {
   return (
-    <WagmiProvider config={sandboxConfig}>
-      <QueryClientProvider client={sandboxQueryClient}>
-        <SandboxContent />
-      </QueryClientProvider>
-    </WagmiProvider>
+    // <WagmiProvider config={sandboxConfig}>
+    // <QueryClientProvider client={sandboxQueryClient}>
+    <SandboxContent />
+    // </QueryClientProvider>
+    // </WagmiProvider>
   );
 }
