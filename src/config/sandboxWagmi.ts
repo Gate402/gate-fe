@@ -12,6 +12,7 @@ export const sandboxConfig = createConfig({
       projectId: process.env.VITE_RAINBOW_PROJECT_ID!, // Same project ID can be used
     }),
   ],
+  ssr: false,
   transports: {
     [mainnet.id]: http(),
     [sepolia.id]: http(),
